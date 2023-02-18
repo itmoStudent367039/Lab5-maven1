@@ -2,14 +2,17 @@ package org.example.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class DataUtil {
     private static DataUtil instance;
+    private File file;
 
     private DataUtil() {
+        setFile();
     }
 
     public static DataUtil getInstance() {
@@ -20,33 +23,36 @@ public class DataUtil {
     }
 
     public File getFile() {
-        File file = null;
-        boolean flag = false;
-        while (!flag) {
-            file = new File(getPath());
-            if (Checker.checkFile(file)) {
-                flag = true;
-            } else {
+        return file;
+    }
+    private void setFile() {
+        File file = new File(setPathFromEnv());
+        try {
+            Checker.checkFileValidity(file);
+        } catch (FileNotFoundException e) {
+            boolean flag = false;
+            while (!flag) {
+                file = new File(setPathFromConsole());
                 try {
-                    throw new FileNotFoundException("File doesnt exist");
-                } catch (FileNotFoundException e) {
-                    System.out.println(e.getMessage());
+                    flag = Checker.checkFileValidity(file);
+                } catch (FileNotFoundException e1) {
+                    System.out.println(e1.getMessage());
                 }
             }
         }
-        return file;
+        this.file = file;
     }
 
-    private String getPath() {
+    private String setPathFromEnv() {
         try {
-            return Optional.ofNullable(System.getenv("FILEFORLAB")).orElseThrow(() -> new FileNotFoundException("Path doesn't exist"));
+            return Optional.ofNullable(System.getenv("FILEFORLA")).orElseThrow(() -> new FileNotFoundException("Path doesn't exist"));
         } catch (FileNotFoundException e) {
-            // e.printStackTrace();
-            return getPathFromConsole();
+            System.out.println(e.getMessage());
+            return "";
         }
     }
 
-    private String getPathFromConsole() {
+    private String setPathFromConsole() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter a path to your file");
         return scanner.nextLine();
