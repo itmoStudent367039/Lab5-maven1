@@ -25,31 +25,16 @@ public class DataUtil {
     public File getFile() {
         return file;
     }
+
     private void setFile() {
-        File file = new File(setPathFromEnv());
-        try {
-            Checker.checkFileValidity(file);
-        } catch (FileNotFoundException e) {
-            boolean flag = false;
-            while (!flag) {
-                file = new File(setPathFromConsole());
-                try {
-                    flag = Checker.checkFileValidity(file);
-                } catch (FileNotFoundException e1) {
-                    System.out.println(e1.getMessage());
-                }
-            }
+        file = new File(setPathFromEnv());
+        while (!Checker.checkFileValidity(file)) {
+            file = new File(setPathFromConsole());
         }
-        this.file = file;
     }
 
     private String setPathFromEnv() {
-        try {
-            return Optional.ofNullable(System.getenv("FILEFORLA")).orElseThrow(() -> new FileNotFoundException("Path doesn't exist"));
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-            return "";
-        }
+        return Checker.checkEnvValidity(System.getenv("FILEFORLAB"));
     }
 
     private String setPathFromConsole() {

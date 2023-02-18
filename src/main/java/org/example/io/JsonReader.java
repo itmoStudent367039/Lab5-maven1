@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jdk.jshell.UnresolvedReferenceException;
+import org.example.util.Checker;
 
 import java.io.*;
 import java.util.*;
@@ -24,11 +25,14 @@ public class JsonReader<T> {
         this.mapper = new ObjectMapper();
         this.javaTimeModule = new JavaTimeModule();
         this.mapper.registerModule(javaTimeModule);
+        this.setElementList();
     }
 
     public List<T> getElementsAsList() {
-        parseFillElementsList(readDataFromFile());
-        return Objects.isNull(elementList) ? new ArrayList<T>() : elementList;
+        return elementList;
+    }
+    private void setElementList() {
+        elementList = Checker.checkFileToParse(file) ? parseGetElementsListFromFile(readDataFromFile()) : new ArrayList<T>();
     }
 
     private String readDataFromFile() {
@@ -44,11 +48,19 @@ public class JsonReader<T> {
         return Objects.isNull(buffer) ? "" : String.valueOf(buffer);
     }
 
-    private void parseFillElementsList(String data) {
+    private List<T> parseGetElementsListFromFile(String data) {
         try {
-            elementList = Arrays.asList(mapper.readValue(data, type));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            return Arrays.asList(mapper.readValue(data, type));
+        } catch (MismatchedInputException e) {
+            System.out.println(e.getMessage());
+            return new ArrayList<T>();
+        } catch (JsonMappingException e1) {
+           System.out.println(e1.getMessage());
+           // e1.printStackTrace();
+            return null;
+        } catch (JsonProcessingException e3) {
+            e3.printStackTrace();
+            return null;
         }
     }
 }
