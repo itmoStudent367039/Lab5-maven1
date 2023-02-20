@@ -7,16 +7,15 @@ import org.example.objects.Product;
 import org.example.util.DataUtil;
 
 import java.util.List;
+import java.util.Queue;
 
 public class CollectionRunner {
     public static void main(String[] args) {
-        MyCollection collection = new MyCollection();
-        CommandDirector manager = new CommandDirector() {{
-            addCommand(new AddCommand("add", collection));
-        }};
         DataUtil util = DataUtil.getInstance();
         JsonReader<Product> reader = new JsonReader<>(util.getFile(), Product[].class);
-        List<Product> products = reader.getElementsAsList();
-        products.stream().forEach(product -> System.out.println(product.getOwner().getName()));
+        ProductCollection<Queue<Product>> collection = new ProductQueue(reader.getElementsAsList());
+        CommandDirector manager = new CommandDirector() {{
+            addCommand(new AddCommand("add", (ProductQueue) collection));
+        }};
     }
 }

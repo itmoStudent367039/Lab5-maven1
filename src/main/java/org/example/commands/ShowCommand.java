@@ -1,11 +1,13 @@
 package org.example.commands;
 
-import org.example.collection.MyCollection;
 
-public class ShowCommand implements Command {
+import org.example.collection.ProductQueue;
+
+public class ShowCommand extends Command {
     private String name;
-    private MyCollection collection;
-    public ShowCommand(String name, MyCollection myCollection) {
+    private ProductQueue collection;
+    private String description;
+    public ShowCommand(String name, ProductQueue myCollection) {
         this.name = name;
         this.collection = myCollection;
     }
@@ -13,6 +15,12 @@ public class ShowCommand implements Command {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public void execute(Object... objects) {
 

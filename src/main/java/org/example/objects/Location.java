@@ -1,24 +1,20 @@
 package org.example.objects;
 
-public class Location {
-    private double x;
-    private long y;
-    private float z;
+import lombok.Data;
+
+import java.util.Objects;
+@Data
+public class Location implements Valid {
+    private Double x;
+    private Double y;
+    private Long z;
     private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public float getZ() {
-        return z;
-    }
-
-    public long getY() {
-        return y;
-    }
-
-    public double getX() {
-        return x;
+    @Override
+    public boolean isValid() {
+        return !Objects.isNull(x) &&
+                !Objects.isNull(y) &&
+                !Objects.isNull(z) &&
+                !Objects.isNull(name) && name.length() < 871;
     }
 }

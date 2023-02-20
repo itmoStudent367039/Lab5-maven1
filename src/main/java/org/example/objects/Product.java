@@ -1,42 +1,45 @@
 package org.example.objects;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import org.example.exceptions.ValidException;
 
-import java.time.ZonedDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
-public class Product {
-    private Integer id;
+@Data
+public class Product implements Valid, Comparable<Product>{
+    @JsonIgnore
+    private UUID uuid;
     private String name;
     private Coordinates coordinates;
     private java.time.ZonedDateTime creationDate;
-    private Long price;
+    private int price;
     private UnitOfMeasure unitOfMeasure;
     private Person owner;
 
-    public Integer getId() {
-        return id;
+    public Product() {
+        uuid = UUID.randomUUID();
     }
 
-    public Person getOwner() {
-        return owner;
+    @Override
+    public boolean isValid() throws ValidException {
+        boolean isValid = !Objects.isNull(name) &&
+                !name.isEmpty() &&
+                !Objects.isNull(coordinates) &&
+                !Objects.isNull(creationDate) &&
+                price > 0 &&
+                !Objects.isNull(unitOfMeasure) &&
+                !Objects.isNull(owner) &&
+                coordinates.isValid() && owner.isValid();
+        if (!isValid) {
+            throw new ValidException("Element isn't valid");
+        }
+        return isValid;
     }
 
-    public UnitOfMeasure getUnitOfMeasure() {
-        return unitOfMeasure;
-    }
-
-    public Long getPrice() {
-        return price;
-    }
-    public ZonedDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public String getName() {
-        return name;
+    @Override
+    public int compareTo(Product o) {
+        return 0;
     }
 }

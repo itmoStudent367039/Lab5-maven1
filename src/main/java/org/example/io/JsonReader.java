@@ -1,66 +1,54 @@
 package org.example.io;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jdk.jshell.UnresolvedReferenceException;
 import org.example.util.Checker;
 
 import java.io.*;
 import java.util.*;
 
 public class JsonReader<T> {
-    private File file;
+    private final File file;
     private List<T> elementList;
     private final Class<T[]> type;
-    private ObjectMapper mapper;
-    private JavaTimeModule javaTimeModule;
+    private final ObjectMapper mapper;
 
     public JsonReader(File file, Class<T[]> type) {
         this.file = file;
         this.type = type;
-        this.mapper = new ObjectMapper();
-        this.javaTimeModule = new JavaTimeModule();
-        this.mapper.registerModule(javaTimeModule);
-        this.setElementList();
+        mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+        mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
     }
 
     public List<T> getElementsAsList() {
-        return elementList;
-    }
-    private void setElementList() {
-        elementList = Checker.checkFileToParse(file) ? parseGetElementsListFromFile(readDataFromFile()) : new ArrayList<T>();
+        parseSetElementsListFromFile(readDataFromFile());
+        return Optional.ofNullable(elementList).orElseGet(ArrayList::new);
     }
 
     private String readDataFromFile() {
         char[] buffer = null;
         try (FileReader reader = new FileReader(file)) {
             buffer = new char[(int) file.length()];
-            while (reader.ready()) {
-                reader.read(buffer);
-            }
+            reader.read(buffer);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
         return Objects.isNull(buffer) ? "" : String.valueOf(buffer);
     }
 
-    private List<T> parseGetElementsListFromFile(String data) {
-        try {
-            return Arrays.asList(mapper.readValue(data, type));
-        } catch (MismatchedInputException e) {
-            System.out.println(e.getMessage());
-            return new ArrayList<T>();
-        } catch (JsonMappingException e1) {
-           System.out.println(e1.getMessage());
-           // e1.printStackTrace();
-            return null;
-        } catch (JsonProcessingException e3) {
-            e3.printStackTrace();
-            return null;
+    private void parseSetElementsListFromFile(String data) {
+        if (Checker.checkDataToParse(data)) {
+            try {
+                this.elementList = Arrays.asList(mapper.readValue(data, type));
+            } catch (JsonProcessingException e) {
+                System.err.println("Uncorrect input");
+               e.printStackTrace();
+            }
         }
     }
 }

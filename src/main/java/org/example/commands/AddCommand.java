@@ -1,20 +1,23 @@
 package org.example.commands;
 
-import org.example.collection.MyCollection;
+import org.example.collection.ProductQueue;
 import org.example.objects.Product;
 
-public class AddCommand implements Command {
+public class AddCommand extends Command {
     private String name;
-    MyCollection collection;
+    private ProductQueue collection;
+    private String description;
 
-    public AddCommand(String name, MyCollection collection) {
+    public AddCommand(String name, ProductQueue collection) {
         this.name = name;
         this.collection = collection;
     }
 
+
+
     @Override
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
     @Override

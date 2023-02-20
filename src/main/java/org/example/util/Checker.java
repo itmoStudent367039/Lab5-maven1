@@ -2,6 +2,7 @@ package org.example.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -15,13 +16,30 @@ public class Checker {
                 throw new FileNotFoundException("Файл с JSON по данному пути не найден");
             } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
-                return false;
             }
         }
-        return file.isFile() && file.exists();
+        if (!file.canRead()) {
+            try {
+                throw new IOException("-r for file");
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return file.canRead() && file.isFile() && file.exists();
     }
 
-    public static String checkEnvValidity(String env) {
+    public static boolean checkDataToParse(String line) {
+        if (line.trim().isEmpty()) {
+            try {
+                throw new IllegalAccessException("Empty file");
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return !line.trim().isEmpty();
+    }
+
+    public static String getEnvValidity(String env) {
         try {
             return Optional.ofNullable(env).orElseThrow(() -> new FileNotFoundException("Path doesn't exist"));
         } catch (FileNotFoundException e) {
@@ -29,10 +47,13 @@ public class Checker {
             return "";
         }
     }
+
     public static boolean checkParseData(String data) {
         return true;
     }
-    public static boolean checkFileToParse(File file) {
-        return file.canRead();
+
+    public static boolean fileIsEmpty(File file) {
+        return file.length() == 0;
     }
+
 }

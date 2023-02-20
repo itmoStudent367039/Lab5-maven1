@@ -1,10 +1,6 @@
 package org.example.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.Path;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class DataUtil {
@@ -34,12 +30,14 @@ public class DataUtil {
     }
 
     private String setPathFromEnv() {
-        return Checker.checkEnvValidity(System.getenv("FILEFORLAB"));
+        return Checker.getEnvValidity(System.getenv("FILEFORLAB"));
     }
 
     private String setPathFromConsole() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter a path to your file");
-        return scanner.nextLine();
+        String line = scanner.nextLine();
+        scanner.close();
+        return line;
     }
 }
