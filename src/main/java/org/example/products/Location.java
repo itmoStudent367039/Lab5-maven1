@@ -1,4 +1,4 @@
-package org.example.objects;
+package org.example.products;
 
 import lombok.Data;
 
@@ -9,6 +9,16 @@ public class Location implements Valid {
     private Double y;
     private Long z;
     private String name;
+
+    public Location(Double x, Double y, Long z, String name) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.name = name;
+    }
+
+    public Location() {
+    }
 
     @Override
     public boolean isValid() {

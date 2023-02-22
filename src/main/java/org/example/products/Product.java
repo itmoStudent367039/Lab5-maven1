@@ -1,4 +1,4 @@
-package org.example.objects;
+package org.example.products;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 public class Product implements Valid, Comparable<Product>{
     @JsonIgnore
-    private UUID uuid;
+    private UUID id;
     private String name;
     private Coordinates coordinates;
     private java.time.ZonedDateTime creationDate;
@@ -19,7 +19,8 @@ public class Product implements Valid, Comparable<Product>{
     private Person owner;
 
     public Product() {
-        uuid = UUID.randomUUID();
+        super();
+        id = UUID.randomUUID();
     }
 
     @Override

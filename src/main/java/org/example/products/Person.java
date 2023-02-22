@@ -1,8 +1,6 @@
-package org.example.objects;
+package org.example.products;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Data;
-import org.example.exceptions.ValidException;
 
 import java.util.Objects;
 @Data
@@ -14,6 +12,17 @@ public class Person implements Valid {
     private Country nationality;
     private Location location;
 
+    public Person(String name, int height, Color eyeColor, Color hairColor, Country nationality, Location location) {
+        this.name = name;
+        this.height = height;
+        this.eyeColor = eyeColor;
+        this.hairColor = hairColor;
+        this.nationality = nationality;
+        this.location = location;
+    }
+
+    public Person() {
+    }
 
     @Override
     public boolean isValid() {

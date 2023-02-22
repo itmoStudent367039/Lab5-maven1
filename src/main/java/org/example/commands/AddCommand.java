@@ -1,31 +1,25 @@
 package org.example.commands;
 
-import org.example.collection.ProductQueue;
-import org.example.objects.Product;
+import org.example.collection.ProductCollection;
+import org.example.director.ProductDirector;
+import org.example.products.Product;
 
-public class AddCommand extends Command {
-    private String name;
-    private ProductQueue collection;
-    private String description;
+import java.util.Collection;
 
-    public AddCommand(String name, ProductQueue collection) {
-        this.name = name;
-        this.collection = collection;
-    }
+public class AddCommand<T extends Collection<Product>> extends Command<T, Product> {
+    public final static String description = "добавить новый элемент в коллекцию";
+    public final static String syntax = "add {element}";
+    private ProductDirector productDirector;
 
-
-
-    @Override
-    public String getDescription() {
-        return description;
+    public AddCommand(String name, ProductCollection<T> collection, ProductDirector director) {
+        super(collection, name);
+        this.productDirector = director;
     }
 
     @Override
-    public void execute(Object... objects) {
-        if (objects == null || objects.length == 0) {
-            System.out.println("Некорректный ввод");
-        } else {
-            collection.addElement((Product) objects[0]);
-        }
+    public void execute() {
+        productDirector.build();
+        Product product = productDirector.getBuilder().getProduct();
+        super.getCollection().add(product);
     }
 }

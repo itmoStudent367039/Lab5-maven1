@@ -2,7 +2,7 @@ package org.example.commands;
 
 import java.util.*;
 
-public class CommandDirector {
+public class CommandEditor {
     private Map<String, Command> commandMap = new HashMap<>();
 
     public void show() {
@@ -20,11 +20,14 @@ public class CommandDirector {
     public void addCommand(Command command) {
         commandMap.put(command.getName(), command);
     }
+    public void executeAdd() {
+        commandMap.get("add").execute();
+    }
 
     public void execute(String commandName, Object... objects) {
         Command command = commandMap.get(commandName);
         if (command != null) {
-            command.execute(objects);
+            command.execute();
         } else {
             System.err.println("Такой команды нет");
         }

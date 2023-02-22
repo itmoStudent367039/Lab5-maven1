@@ -1,4 +1,4 @@
-package org.example.objects;
+package org.example.products;
 
 import org.example.exceptions.ValidException;
 

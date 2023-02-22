@@ -1,6 +1,7 @@
 package org.example.util;
 
 import java.io.File;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class DataUtil {
@@ -36,7 +37,12 @@ public class DataUtil {
     private String setPathFromConsole() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter a path to your file");
-        String line = scanner.nextLine();
+        String line = "";
+        try {
+        line = scanner.nextLine();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
         scanner.close();
         return line;
     }

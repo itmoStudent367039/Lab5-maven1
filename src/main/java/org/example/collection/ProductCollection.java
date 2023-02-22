@@ -1,6 +1,6 @@
 package org.example.collection;
 
-import org.example.objects.Product;
+import org.example.products.Product;
 
 import java.util.Collection;
 

@@ -1,14 +1,19 @@
-package org.example.objects;
+package org.example.products;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.example.exceptions.ValidException;
 
 import java.util.Objects;
 @Data
 public class Coordinates implements Valid {
     private Long x;
     private double y;
+    public Coordinates(Long x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Coordinates() {
+    }
 
     @Override
     public boolean isValid() {

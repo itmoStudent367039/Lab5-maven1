@@ -1,32 +1,30 @@
 package org.example.commands;
 
 
-import org.example.collection.ProductQueue;
+import org.example.collection.ProductCollection;
+import org.example.products.Product;
 
-public class HelpCommand extends Command {
-    private String name;
-    private ProductQueue collection;
-    private CommandDirector director;
+import java.util.Collection;
 
-    private String description;
-    public HelpCommand(String name, ProductQueue collection, CommandDirector commandDirector) {
-        this.name = name;
-        this.collection = collection;
+public class HelpCommand <T extends Collection<Product>> extends Command<T, Product> {
+    private CommandEditor director;
+    public static final String syntax = "jfds";
+    public static final String description = "dsfsdfsdfsd";
+    public HelpCommand(String name, ProductCollection<T> collection, CommandEditor commandDirector) {
+        super(collection, name);
         this.director = commandDirector;
     }
 
     @Override
     public String getName() {
-        return name;
+        return super.getName();
+    }
+    public CommandEditor getDirector() {
+        return director;
     }
 
     @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public void execute(Object... objects) {
+    public void execute() {
 
     }
 }
