@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.util.Objects;
 @Data
-public class Person implements Valid {
+public class Person implements Valid, Comparable<Person> {
     private String name;
     private int height;
     private Color eyeColor;
@@ -32,6 +32,12 @@ public class Person implements Valid {
                 !Objects.isNull(eyeColor) &&
                 !Objects.isNull(hairColor) &&
                 !Objects.isNull(nationality) &&
-                !Objects.isNull(location);
+                !Objects.isNull(location) &&
+                location.isValid();
+    }
+
+    @Override
+    public int compareTo(Person o) {
+        return this.name.toUpperCase().compareTo(o.getName().toUpperCase()) * -1;
     }
 }

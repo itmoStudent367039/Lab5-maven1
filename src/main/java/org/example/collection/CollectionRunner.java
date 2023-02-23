@@ -1,26 +1,38 @@
 package org.example.collection;
 
-import org.example.builders.ProductBuilder;
+import org.example.application.Application;
 import org.example.builders.ProductConsoleBuilder;
-import org.example.commands.AddCommand;
-import org.example.commands.CommandEditor;
+import org.example.commands.*;
 import org.example.director.ProductDirector;
 import org.example.io.JsonReader;
 import org.example.products.Product;
 import org.example.util.DataUtil;
 
+import java.io.File;
 import java.util.Queue;
 
 public class CollectionRunner {
     public static void main(String[] args) {
         DataUtil util = DataUtil.getInstance();
-        JsonReader<Product> reader = new JsonReader<>(util.getFile(), Product[].class);
-        ProductCollection<Queue<Product>> collection = new ProductQueue(reader.getElementsAsList());
-        ProductDirector productDirector = new ProductDirector(ProductConsoleBuilder.getInstance());
+        File homeFile = util.getFile();
+        JsonReader<Product> reader = new JsonReader<>(homeFile, Product[].class);
+        ProductCollection<Queue<Product>> collection = new ProductQueue(reader.getElementsAsList(), homeFile);
+        ProductDirector productDirector = new ProductDirector(new ProductConsoleBuilder());
         CommandEditor manager = new CommandEditor() {{
             addCommand(new AddCommand<>("add", collection, productDirector));
+            addCommand(new ExitCommand<>("exit"));
+            addCommand(new ShowCommand<>("show", collection));
+            addCommand(new ClearCommand<>("clear", collection));
+            addCommand(new HeadCommand<>("head", collection));
+            addCommand(new InfoCommand<>("info", collection));
+            addCommand(new HelpCommand<>("help", collection, this));
+            addCommand(new HistoryCommand<>("history", collection, this));
+            addCommand(new RemoveByIdCommand<>("remove_by_id", collection));
+            addCommand(new UpdateById<>("update_by_id", collection, productDirector));
+            addCommand(new PrintOwnersCommand<>("print_owners", collection));
+            addCommand(new CountLessMeasure<>("count_less_measure", collection));
         }};
-        manager.executeAdd();
-        collection.show();
+        Application application = new Application(manager);
+        application.run();
     }
 }

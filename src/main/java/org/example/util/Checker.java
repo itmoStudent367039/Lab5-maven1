@@ -47,11 +47,6 @@ public class Checker {
             return "";
         }
     }
-
-    public static boolean checkParseData(String data) {
-        return true;
-    }
-
     public static boolean fileIsEmpty(File file) {
         return file.length() == 0;
     }

@@ -4,32 +4,36 @@ import java.util.*;
 
 public class CommandEditor {
     private Map<String, Command> commandMap = new HashMap<>();
-
-    public void show() {
-        commandMap.keySet().forEach(System.out::println);
+    private List<String> history = new ArrayList<>();
+    public List<String> getHistory() {
+        return history;
     }
-
-    public List<Command> getAccessibleCommands() {
-        List<Command> commands = new ArrayList<>();
-        commandMap.entrySet()
-                .stream()
-                .forEach(entry -> commands.add(entry.getValue()));
-        return commands;
+    public Map<String, Command> getCommandMap() {
+        return commandMap;
     }
-
     public void addCommand(Command command) {
         commandMap.put(command.getName(), command);
     }
-    public void executeAdd() {
-        commandMap.get("add").execute();
-    }
 
-    public void execute(String commandName, Object... objects) {
-        Command command = commandMap.get(commandName);
-        if (command != null) {
-            command.execute();
+    public void execute(String[] commandArgs) {
+        if (commandArgs.length == 1) {
+            Command command = commandMap.get(commandArgs[0]);
+            if (!Objects.isNull(command)) {
+                command.execute(null);
+                history.add(commandArgs[0]);
+            } else {
+                System.err.println("Такой команды нет");
+            }
+        } else if (commandArgs.length == 2) {
+            Command command = commandMap.get(commandArgs[0]);
+            if (!Objects.isNull(command)) {
+                command.execute(commandArgs[1]);
+                history.add(commandArgs[0]);
+            } else {
+                System.err.println("Такой команды нет");
+            }
         } else {
-            System.err.println("Такой команды нет");
+            System.out.println("Uncorrect input");
         }
     }
 }

@@ -12,22 +12,11 @@ import java.util.Scanner;
 
 public class ProductConsoleBuilder implements ProductBuilder {
     private Product product;
-    private static ProductConsoleBuilder productConsoleBuilder;
     private final Scanner scanner = new Scanner(System.in);
-    private static ProductConsoleBuilder o = new ProductConsoleBuilder();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private ProductConsoleBuilder() {
-
-    }
     @Override
     public void update(Product product) {
         this.product = product;
-    }
-    public static ProductConsoleBuilder getInstance() {
-        if (productConsoleBuilder == null) {
-            productConsoleBuilder = new ProductConsoleBuilder();
-        }
-        return productConsoleBuilder;
     }
     private String input() {
         System.out.print("> ");
@@ -37,7 +26,7 @@ public class ProductConsoleBuilder implements ProductBuilder {
     public void setName() {
         String productName = null;
         while (Objects.isNull(productName)) {
-            System.out.println("Enter product's name, P.S: One word with capital letter, more than to ones");
+            System.out.println("Enter product's name, P.S: not empty");
             String line = input().trim();
             if (BuildChecker.checkProductName(line)) {
                 productName = line;
@@ -61,7 +50,7 @@ public class ProductConsoleBuilder implements ProductBuilder {
                 x = Long.parseLong(lineX);
 
                 while (y.equals("")) {
-                    System.out.println("Enter product's coordinate y, P.S: double number");
+                    System.out.println("Enter product's coordinate y, P.S: double number <= 622");
                     String lineY = input().trim();
 
                     if (BuildChecker.checkYCoordinate(lineY)) {
@@ -136,7 +125,7 @@ public class ProductConsoleBuilder implements ProductBuilder {
         Color hair = null;
         Country country = null;
         while (Objects.isNull(name)) {
-            System.out.println("Enter product's owner name, P.S: One word with capital letter, more than to ones");
+            System.out.println("Enter product's owner name, P.S: not empty");
             String line = input();
             if (BuildChecker.checkProductName(line)) {
                 name = line;
@@ -215,7 +204,7 @@ public class ProductConsoleBuilder implements ProductBuilder {
             }
         }
         while (Objects.isNull(locationName)) {
-            System.out.println("Enter owner's location name, P.S: One word with capital letter, more than to ones");
+            System.out.println("Enter owner's location name, P.S: not empty");
             String line = input();
             if (BuildChecker.checkLocationName(line)) {
                 locationName = line;

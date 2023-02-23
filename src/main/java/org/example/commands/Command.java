@@ -6,7 +6,7 @@ import org.example.products.Product;
 
 import java.util.Collection;
 
-public abstract class Command<T extends Collection<E>, E> {
+public abstract class Command<T extends Collection<E>, E, R> {
     private TypeCollection<?, E> collection;
     private String name;
     public Command() {
@@ -16,6 +16,10 @@ public abstract class Command<T extends Collection<E>, E> {
         this.collection = collection;
         this.name = name;
     }
+    abstract public String getDescription();
+    public Command(String name) {
+        this.name = name;
+    }
     public String getName() {
         return name;
     }
@@ -23,5 +27,5 @@ public abstract class Command<T extends Collection<E>, E> {
         return collection;
     }
 
-    public abstract void execute();
+    public abstract void execute(R arg);
 }

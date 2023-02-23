@@ -4,12 +4,16 @@ import org.example.products.Product;
 
 import java.util.Collection;
 
-public class ClearCommand <T extends Collection<Product>> extends Command<T, Product> {
-    public static final String description = "clear";
-    public static final String syntax = "kkk";
+public class ClearCommand <T extends Collection<Product>> extends Command<T, Product, String> {
+    private final String description = "clear: очистить коллекцию";
 
     public ClearCommand(String name, ProductCollection<T> collection) {
         super(collection, name);
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 
     @Override
@@ -17,7 +21,7 @@ public class ClearCommand <T extends Collection<Product>> extends Command<T, Pro
         return super.getName();
     }
     @Override
-    public void execute() {
+    public void execute(String arg) {
         super.getCollection().clear();
     }
 }

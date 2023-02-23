@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 
 public class BuildChecker {
     public static boolean checkProductName(String name) {
-        return !name.isEmpty() && name.matches("[A-Z][a-z]{1,15}");
+        return !name.isEmpty();
     }
     public static boolean checkProductPrice(String price) {
         return price.matches("[0-9]{1,9}") && !price.equals("0");
@@ -38,6 +38,6 @@ public class BuildChecker {
         return coordinate.length() < 18 && coordinate.matches("^[-+]?[0-9]*\\.?[0-9]+$");
     }
     public static boolean checkLocationName(String name) {
-        return !name.isEmpty() && name.length() <= 871 && name.matches("[A-Z][a-z]{1,15}");
+        return !name.isEmpty() && name.length() <= 871;
     }
 }

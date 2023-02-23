@@ -14,7 +14,6 @@ public class ProductDirector {
     }
 
     public void build() {
-        builder.update(new Product());
         builder.setName();
         builder.setCoordinates();
         builder.setCreationDate();
