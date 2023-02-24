@@ -4,7 +4,6 @@ import org.example.exceptions.ValidException;
 import org.example.products.Person;
 import org.example.products.Product;
 import org.example.products.UnitOfMeasure;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.File;
 import java.time.ZonedDateTime;
@@ -19,10 +18,14 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy - HH:mm:ss z");
 
     public ProductQueue(Collection<Product> list, File file) {
-        collection = new PriorityQueue<>();
+        if (this.checkValidOfElements(list)) {
+            collection = new PriorityQueue<>(list);
+        } else {
+            collection = new PriorityQueue<>();
+        }
         creationDate = ZonedDateTime.now();
-        addAllElementsOfCollection(list);
         this.homeFile = file;
+
     }
 
     public ProductQueue() {
@@ -117,15 +120,16 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
                         .collect(Collectors.joining(System.lineSeparator())));
     }
 
-    private void addAllElementsOfCollection(Collection<Product> list) {
+    private boolean checkValidOfElements(Collection<Product> list) {
         for (Product product : list) {
             try {
-                if (product.isValid()) {
-                    collection.add(product);
+                if (!product.isValid()) {
+                    return false;
                 }
             } catch (ValidException e) {
                 System.out.println(e.getMessage());
             }
         }
+        return true;
     }
 }

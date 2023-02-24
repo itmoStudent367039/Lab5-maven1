@@ -1,15 +1,19 @@
-package org.example.collection;
+package org.example;
 
 import org.example.application.Application;
 import org.example.builders.ProductConsoleBuilder;
+import org.example.collection.ProductCollection;
+import org.example.collection.ProductQueue;
 import org.example.commands.*;
 import org.example.director.ProductDirector;
 import org.example.io.JsonReader;
-import org.example.products.Location;
 import org.example.products.Product;
 import org.example.util.DataUtil;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Queue;
 
 public class CollectionRunner {

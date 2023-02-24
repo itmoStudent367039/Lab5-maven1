@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.example.exceptions.ValidException;
 
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.UUID;
 
 @Data
-public class Product implements Valid, Comparable<Product>{
+public class Product implements Valid, Comparable<Product> {
     @JsonIgnore
     private UUID id;
     private String name;
@@ -41,6 +42,14 @@ public class Product implements Valid, Comparable<Product>{
 
     @Override
     public int compareTo(Product o) {
-        return 0;
+        if (Objects.isNull(o)) {
+            return -1;
+        }
+        int eps = this.price - o.getPrice();
+        if (eps != 0) {
+            return eps;
+        } else {
+            return this.name.compareTo(o.getName());
+        }
     }
 }
