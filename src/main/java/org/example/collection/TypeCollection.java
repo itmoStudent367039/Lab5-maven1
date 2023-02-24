@@ -10,11 +10,12 @@ public interface TypeCollection<T extends Collection<E>, E> {
     void clear();
     void info();
     void removeById(UUID id);
-    void head();
+    E head();
     void show();
     int size();
     boolean checkElementById(UUID id);
     E getElementById(UUID id);
     void printOwners();
     void countLessMeasure(UnitOfMeasure unitOfMeasure);
+    void groupElementsByName();
 }

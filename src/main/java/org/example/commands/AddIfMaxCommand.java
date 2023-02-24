@@ -27,6 +27,14 @@ public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, P
         Product product = productDirector.getBuilder().getProduct();
         if (super.getCollection().size() == 0) {
             super.getCollection().add(product);
+            System.out.println("Product was add");
+            return;
+        }
+        if (super.getCollection().head().compareTo(product) < 0) {
+            super.getCollection().add(product);
+            System.out.println("Product was add");
+        } else {
+            System.out.println("Your product less than max of collection");
         }
     }
 }

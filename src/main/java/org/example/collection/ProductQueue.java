@@ -4,6 +4,7 @@ import org.example.exceptions.ValidException;
 import org.example.products.Person;
 import org.example.products.Product;
 import org.example.products.UnitOfMeasure;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.File;
 import java.time.ZonedDateTime;
@@ -80,8 +81,8 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
     }
 
     @Override
-    public void head() {
-        System.out.println(collection.peek());
+    public Product head() {
+        return collection.peek();
     }
 
     @Override
@@ -92,10 +93,18 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
     }
 
     @Override
+    public void groupElementsByName() {
+        collection.stream()
+                .collect(Collectors.groupingBy(Product::getName, Collectors.counting()))
+                .entrySet()
+                .forEach((stringLongEntry -> System.out.println(stringLongEntry.getKey() + " : " + stringLongEntry.getValue())));
+    }
+
+    @Override
     public void printOwners() {
         System.out.println(collection.stream()
                 .map(Product::getOwner)
-                .sorted(Person::compareTo)
+                .sorted((o1, o2) -> o1.getName().toUpperCase().compareTo(o2.getName().toUpperCase()) * -1)
                 .map(Person::toString)
                 .collect(Collectors.joining(System.lineSeparator())));
     }

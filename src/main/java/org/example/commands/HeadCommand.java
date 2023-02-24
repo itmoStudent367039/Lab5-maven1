@@ -4,6 +4,7 @@ import org.example.collection.TypeCollection;
 import org.example.products.Product;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public class HeadCommand<T extends Collection<Product>> extends Command<T, Product, String> {
     private final String description = "head: вывести первый элемент коллекции";
@@ -19,6 +20,11 @@ public class HeadCommand<T extends Collection<Product>> extends Command<T, Produ
 
     @Override
     public void execute(String arg) {
-        super.getCollection().head();
+        Product product = super.getCollection().head();
+        if (Objects.isNull(product)) {
+            System.out.println("Collection is empty");
+        } else {
+            System.out.println(product);
+        }
     }
 }

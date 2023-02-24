@@ -28,9 +28,6 @@ public class UpdateById<T extends Collection<Product>> extends Command<T, Produc
             if (super.getCollection().checkElementById(id)) {
                 director.getBuilder().update(super.getCollection().getElementById(id));
                 director.build();
-                Product product = director.getBuilder().getProduct();
-                super.getCollection().removeById(id);
-                super.getCollection().add(product);
                 System.out.println("Element was update successfully");
             } else {
                 System.out.println("Element with this id wasn't found");

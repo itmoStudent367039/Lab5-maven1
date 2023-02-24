@@ -1,17 +1,12 @@
 package org.example.commands;
 
-import org.example.collection.ProductCollection;
 import org.example.collection.TypeCollection;
-import org.example.products.Product;
 
 import java.util.Collection;
 
 public abstract class Command<T extends Collection<E>, E, R> {
     private TypeCollection<?, E> collection;
-    private String name;
-    public Command() {
-
-    }
+    private final String name;
     public Command(TypeCollection<?, E> collection, String name) {
         this.collection = collection;
         this.name = name;

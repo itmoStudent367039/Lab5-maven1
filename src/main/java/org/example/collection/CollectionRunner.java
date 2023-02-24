@@ -5,6 +5,7 @@ import org.example.builders.ProductConsoleBuilder;
 import org.example.commands.*;
 import org.example.director.ProductDirector;
 import org.example.io.JsonReader;
+import org.example.products.Location;
 import org.example.products.Product;
 import org.example.util.DataUtil;
 
@@ -31,6 +32,7 @@ public class CollectionRunner {
             addCommand(new UpdateById<>("update_by_id", collection, productDirector));
             addCommand(new PrintOwnersCommand<>("print_owners", collection));
             addCommand(new CountLessMeasure<>("count_less_measure", collection));
+            addCommand(new GroupElementsByNameCommand<>("group_products_by_name", collection));
         }};
         Application application = new Application(manager);
         application.run();
