@@ -34,7 +34,7 @@ public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, P
             super.getCollection().add(product);
             System.out.println("Product was add");
         } else {
-            System.out.println("Your product less than max of collection");
+            System.out.println("Your product less than max of collection or equals it");
         }
     }
 }

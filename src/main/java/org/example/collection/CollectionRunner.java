@@ -33,6 +33,7 @@ public class CollectionRunner {
             addCommand(new PrintOwnersCommand<>("print_owners", collection));
             addCommand(new CountLessMeasure<>("count_less_measure", collection));
             addCommand(new GroupElementsByNameCommand<>("group_products_by_name", collection));
+            addCommand(new AddIfMaxCommand<>("add_if_max", collection, productDirector));
         }};
         Application application = new Application(manager);
         application.run();
