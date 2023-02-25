@@ -7,14 +7,12 @@ import org.example.collection.ProductQueue;
 import org.example.commands.*;
 import org.example.director.ProductDirector;
 import org.example.io.JsonReader;
+import org.example.io.JsonWriter;
 import org.example.products.Product;
 import org.example.util.DataUtil;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Queue;
+import java.util.*;
 
 public class CollectionRunner {
     public static void main(String[] args) {
@@ -22,6 +20,8 @@ public class CollectionRunner {
         File homeFile = util.getFile();
         JsonReader<Product> reader = new JsonReader<>(homeFile, Product[].class);
         ProductCollection<Queue<Product>> collection = new ProductQueue(reader.getElementsAsList(), homeFile);
+        JsonWriter<Product> writer = new JsonWriter<>();
+
         ProductDirector productDirector = new ProductDirector(new ProductConsoleBuilder());
         CommandEditor manager = new CommandEditor() {{
             addCommand(new AddCommand<>("add", collection, productDirector));
@@ -38,6 +38,7 @@ public class CollectionRunner {
             addCommand(new CountLessMeasure<>("count_less_measure", collection));
             addCommand(new GroupElementsByNameCommand<>("group_products_by_name", collection));
             addCommand(new AddIfMaxCommand<>("add_if_max", collection, productDirector));
+            addCommand(new SaveCommand<>("save", collection, writer));
         }};
         Application application = new Application(manager);
         application.run();

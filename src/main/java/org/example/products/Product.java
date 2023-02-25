@@ -1,5 +1,7 @@
 package org.example.products;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.example.exceptions.ValidException;
@@ -9,11 +11,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Data
+@JsonAutoDetect
 public class Product implements Valid, Comparable<Product> {
     @JsonIgnore
     private UUID id;
     private String name;
     private Coordinates coordinates;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss z")
     private java.time.ZonedDateTime creationDate;
     private int price;
     private UnitOfMeasure unitOfMeasure;
@@ -42,14 +46,11 @@ public class Product implements Valid, Comparable<Product> {
 
     @Override
     public int compareTo(Product o) {
-        if (Objects.isNull(o)) {
-            return -1;
-        }
-        int eps = this.price - o.getPrice();
+        int eps = o.price - this.getPrice();
         if (eps != 0) {
             return eps;
         } else {
-            return this.name.compareTo(o.getName());
+            return this.name.toUpperCase().compareTo(o.getName().toUpperCase());
         }
     }
 }

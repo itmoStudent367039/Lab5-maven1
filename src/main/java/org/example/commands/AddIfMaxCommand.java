@@ -30,7 +30,7 @@ public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, P
             System.out.println("Product was add");
             return;
         }
-        if (product.compareTo(super.getCollection().head() ) > 0) {
+        if (product.compareTo(super.getCollection().head() ) < 0) {
             super.getCollection().add(product);
             System.out.println("Product was add");
         } else {

@@ -1,5 +1,6 @@
 package org.example.commands;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.example.collection.ProductCollection;
 import org.example.io.JsonWriter;
 import org.example.products.Product;
@@ -8,11 +9,11 @@ import java.io.File;
 import java.util.Collection;
 
 public class SaveCommand<T extends Collection<Product>> extends Command<T, Product, String> {
-    private File file;
     private final String description = "save: сохранить коллекцию в файл";
-    public SaveCommand(String name, ProductCollection<T> collection, File file, JsonWriter writer) {
+    private JsonWriter<Product> writer;
+    public SaveCommand(String name, ProductCollection<T> collection, JsonWriter<Product> writer) {
         super(collection, name);
-        this.file = file;
+        this.writer = writer;
     }
 
     @Override
@@ -22,6 +23,6 @@ public class SaveCommand<T extends Collection<Product>> extends Command<T, Produ
 
     @Override
     public void execute(String arg) {
-
+        super.getCollection().save(writer);
     }
 }

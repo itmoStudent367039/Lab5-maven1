@@ -1,9 +1,11 @@
 package org.example.products;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Data;
 
 import java.util.Objects;
 @Data
+@JsonAutoDetect
 public class Coordinates implements Valid {
     private Long x;
     private double y;

@@ -1,6 +1,7 @@
 package org.example.collection;
 
 import org.example.exceptions.ValidException;
+import org.example.io.JsonWriter;
 import org.example.products.Person;
 import org.example.products.Product;
 import org.example.products.UnitOfMeasure;
@@ -15,27 +16,34 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
     private final Queue<Product> collection;
     private final java.time.ZonedDateTime creationDate;
     private File homeFile;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy - HH:mm:ss z");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
 
     public ProductQueue(Collection<Product> list, File file) {
         if (this.checkValidOfElements(list)) {
-            collection = new PriorityQueue<>(list);
+            collection = new PriorityQueue<Product>(list);
         } else {
             collection = new PriorityQueue<>();
         }
         creationDate = ZonedDateTime.now();
         this.homeFile = file;
-
     }
-
-    public ProductQueue() {
-        collection = new PriorityQueue<>();
-        creationDate = ZonedDateTime.now();
-    }
-
     @Override
     public int size() {
         return collection.size();
+    }
+    @Override
+    public void save(JsonWriter<Product> writer) {
+        writer.writeToFileCollection(homeFile, new ArrayList<>(collection));
+    }
+
+    @Override
+    public Queue<Product> getCollection() {
+        return collection;
+    }
+
+    @Override
+    public File getFile() {
+        return homeFile;
     }
 
     @Override

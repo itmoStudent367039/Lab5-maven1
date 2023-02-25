@@ -1,9 +1,11 @@
 package org.example.products;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Data;
 
 import java.util.Objects;
 @Data
+@JsonAutoDetect
 public class Person implements Valid, Comparable<Person> {
     private String name;
     private int height;

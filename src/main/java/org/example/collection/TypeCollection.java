@@ -1,8 +1,12 @@
 package org.example.collection;
 
+import org.example.io.JsonWriter;
+import org.example.products.Product;
 import org.example.products.UnitOfMeasure;
 
+import java.io.File;
 import java.util.Collection;
+import java.util.Queue;
 import java.util.UUID;
 
 public interface TypeCollection<T extends Collection<E>, E> {
@@ -18,4 +22,7 @@ public interface TypeCollection<T extends Collection<E>, E> {
     void printOwners();
     void countLessMeasure(UnitOfMeasure unitOfMeasure);
     void groupElementsByName();
+    void save(JsonWriter<E> writer);
+    T getCollection();
+    File getFile();
 }
