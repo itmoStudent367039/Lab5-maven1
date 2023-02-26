@@ -9,12 +9,12 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class FileProductBuilder implements ProductBuilder {
+public class ArgsProductBuilder implements ProductBuilder {
     private String[] args;
     private Product product;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public FileProductBuilder(String... args) {
+    public ArgsProductBuilder(String... args) {
         this.args = args;
     }
 
