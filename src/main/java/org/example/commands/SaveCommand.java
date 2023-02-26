@@ -8,7 +8,7 @@ import org.example.products.Product;
 import java.io.File;
 import java.util.Collection;
 
-public class SaveCommand<T extends Collection<Product>> extends Command<T, Product, String> {
+public class SaveCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "save: сохранить коллекцию в файл";
     private JsonWriter<Product> writer;
     public SaveCommand(String name, ProductCollection<T> collection, JsonWriter<Product> writer) {
@@ -22,7 +22,7 @@ public class SaveCommand<T extends Collection<Product>> extends Command<T, Produ
     }
 
     @Override
-    public void execute(String arg) {
+    public void execute(String ... args) {
         super.getCollection().save(writer);
     }
 }

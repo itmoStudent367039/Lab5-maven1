@@ -21,7 +21,7 @@ public class Application {
             System.out.print("Введите команду:\n > ");
             String line = scanner.nextLine().trim();
             if (!line.isEmpty()) {
-                input = line.split(" ");
+                input = line.split(" ", 2);
             } else {
                 System.out.println("Uncorrect input");
             }

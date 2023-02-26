@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class HistoryCommand<T extends Collection<Product>> extends Command<T, Product, String> {
+public class HistoryCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "history: вывести последние 11 команд (без их аргументов)";
     private CommandEditor commandEditor;
 
@@ -22,7 +22,7 @@ public class HistoryCommand<T extends Collection<Product>> extends Command<T, Pr
     }
 
     @Override
-    public void execute(String arg) {
+    public void execute(String ... args) {
         List<String> history = commandEditor.getHistory();
         if (history.size() > 11) {
             for (int i = history.size() - 12; i < history.size() - 1; i++) {

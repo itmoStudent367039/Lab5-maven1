@@ -13,7 +13,7 @@ public class Checker {
     public static boolean checkFileValidity(File file) {
         if ((!(file.exists() && file.isFile())) && !(file.getName().equals(""))) {
             try {
-                throw new FileNotFoundException("Файл с JSON по данному пути не найден");
+                throw new FileNotFoundException("Файл по данному пути не найден");
             } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
             }

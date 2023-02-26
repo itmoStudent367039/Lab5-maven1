@@ -20,8 +20,8 @@ public class BuildChecker {
     public static boolean checkXCoordinate(String x) {
             return x.length() < 18 && x.matches("^-?[0-9]+$");
     }
-    public static boolean checkHeight(String x) {
-        return x.length() < 10 && !x.equals("0") && x.matches("[0-9]{1,9}");
+    public static boolean checkHeight(String height) {
+        return height.length() < 10 && !height.equals("0") && height.matches("[0-9]{1,9}");
     }
     public static boolean checkYCoordinate(String y) {
         boolean value = y.length() < 18 && y.matches("^[-+]?[0-9]*\\.?[0-9]+$");
@@ -39,5 +39,8 @@ public class BuildChecker {
     }
     public static boolean checkLocationName(String name) {
         return !name.isEmpty() && name.length() <= 871;
+    }
+    public static boolean checkCountry(String country) {
+        return country.matches("[1-3]");
     }
 }

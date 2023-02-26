@@ -7,7 +7,7 @@ import org.example.products.Product;
 import java.util.Collection;
 import java.util.UUID;
 
-public class UpdateById<T extends Collection<Product>> extends Command<T, Product, String> {
+public class UpdateById<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "update id {element}: обновить значения элемента из коллекции по его id";
     private ProductDirector director;
 
@@ -22,9 +22,9 @@ public class UpdateById<T extends Collection<Product>> extends Command<T, Produc
     }
 
     @Override
-    public void execute(String arg) {
+    public void execute(String ... args) {
         try {
-            UUID id = UUID.fromString(arg);
+            UUID id = UUID.fromString(args[0]);
             if (super.getCollection().checkElementById(id)) {
                 director.getBuilder().update(super.getCollection().getElementById(id));
                 director.build();

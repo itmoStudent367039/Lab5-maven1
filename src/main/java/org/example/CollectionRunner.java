@@ -39,6 +39,7 @@ public class CollectionRunner {
             addCommand(new GroupElementsByNameCommand<>("group_products_by_name", collection));
             addCommand(new AddIfMaxCommand<>("add_if_max", collection, productDirector));
             addCommand(new SaveCommand<>("save", collection, writer));
+            addCommand(new ExecuteScriptCommand<>("execute_script", this));
         }};
         Application application = new Application(manager);
         application.run();

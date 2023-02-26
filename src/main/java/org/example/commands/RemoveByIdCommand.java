@@ -6,7 +6,7 @@ import org.example.products.Product;
 import java.util.Collection;
 import java.util.UUID;
 
-public class RemoveByIdCommand<T extends Collection<Product>> extends Command<T, Product, String> {
+public class RemoveByIdCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "remove_by_id id: удалить элемент из коллекции по его id, который равен заданному";
 
     public RemoveByIdCommand(String name, ProductCollection<T> collection) {
@@ -19,9 +19,9 @@ public class RemoveByIdCommand<T extends Collection<Product>> extends Command<T,
     }
 
     @Override
-    public void execute(String arg) {
+    public void execute(String ... args) {
         try {
-            UUID id = UUID.fromString(arg);
+            UUID id = UUID.fromString(args[0]);
             super.getCollection().removeById(id);
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -1,5 +1,7 @@
 package org.example.commands;
 
+import org.example.products.Product;
+
 import java.util.*;
 
 public class CommandEditor {
@@ -19,7 +21,7 @@ public class CommandEditor {
         if (commandArgs.length == 1) {
             Command command = commandMap.get(commandArgs[0]);
             if (!Objects.isNull(command)) {
-                command.execute(null);
+                command.execute();
                 history.add(commandArgs[0]);
             } else {
                 System.err.println("Такой команды нет");
@@ -32,7 +34,15 @@ public class CommandEditor {
             } else {
                 System.err.println("Такой команды нет");
             }
-        } else {
+        } else if (commandArgs.length == 17) {
+            Command command = commandMap.get(commandArgs[0]);
+            if (!Objects.isNull(command)) {
+                command.execute(commandArgs[1], commandArgs[2], commandArgs[3], commandArgs[4], commandArgs[5], commandArgs[6], commandArgs[7], commandArgs[8],
+                        commandArgs[9], commandArgs[10], commandArgs[11], commandArgs[12], commandArgs[13], commandArgs[14], commandArgs[15], commandArgs[16]);
+                history.add(commandArgs[0]);
+            } else {
+                System.out.println("Такой команды нет");
+            }
             System.out.println("Uncorrect input");
         }
     }

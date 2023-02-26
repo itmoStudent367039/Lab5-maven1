@@ -166,7 +166,7 @@ public class ProductConsoleBuilder implements ProductBuilder {
             System.out.println("Choose the number - owner's nationality");
             System.out.println(Country.getCountriesList());
             String line = input().trim();
-            if (BuildChecker.checkColor(line)) {
+            if (BuildChecker.checkCountry(line)) {
                 country = Country.getCountryByNumber(Integer.parseInt(line));
             } else {
                 System.out.println("Uncorrect input");

@@ -1,6 +1,7 @@
 package org.example.director;
 
 import org.example.builders.ProductBuilder;
+import org.example.exceptions.ValidException;
 import org.example.products.Product;
 
 public class ProductDirector {
@@ -12,8 +13,11 @@ public class ProductDirector {
     public ProductBuilder getBuilder() {
         return builder;
     }
+    public void setBuilder(ProductBuilder builder) {
+        this.builder = builder;
+    }
 
-    public void build() {
+    public void build() throws ValidException {
         builder.setName();
         builder.setCoordinates();
         builder.setCreationDate();

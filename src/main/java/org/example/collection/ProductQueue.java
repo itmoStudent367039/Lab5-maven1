@@ -19,11 +19,8 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
 
     public ProductQueue(Collection<Product> list, File file) {
-        if (this.checkValidOfElements(list)) {
-            collection = new PriorityQueue<Product>(list);
-        } else {
-            collection = new PriorityQueue<>();
-        }
+        collection = new PriorityQueue<>();
+        addValidElementsToCollection(list);
         creationDate = ZonedDateTime.now();
         this.homeFile = file;
     }
@@ -115,7 +112,7 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
     public void printOwners() {
         System.out.println(collection.stream()
                 .map(Product::getOwner)
-                .sorted((o1, o2) -> o1.getName().toUpperCase().compareTo(o2.getName().toUpperCase()) * -1)
+                .sorted(Person::compareTo)
                 .map(Person::toString)
                 .collect(Collectors.joining(System.lineSeparator())));
     }
@@ -128,11 +125,11 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
                         .collect(Collectors.joining(System.lineSeparator())));
     }
 
-    private boolean checkValidOfElements(Collection<Product> list) {
+    private boolean addValidElementsToCollection(Collection<Product> list) {
         for (Product product : list) {
             try {
-                if (!product.isValid()) {
-                    return false;
+                if (product.isValid()) {
+                    collection.add(product);
                 }
             } catch (ValidException e) {
                 System.out.println(e.getMessage());

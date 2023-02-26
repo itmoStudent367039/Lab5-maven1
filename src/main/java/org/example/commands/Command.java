@@ -4,7 +4,7 @@ import org.example.collection.TypeCollection;
 
 import java.util.Collection;
 
-public abstract class Command<T extends Collection<E>, E, R> {
+public abstract class Command<T extends Collection<E>, E> {
     private TypeCollection<?, E> collection;
     private final String name;
     public Command(TypeCollection<?, E> collection, String name) {
@@ -22,5 +22,5 @@ public abstract class Command<T extends Collection<E>, E, R> {
         return collection;
     }
 
-    public abstract void execute(R arg);
+    public abstract void execute(String ... args);
 }

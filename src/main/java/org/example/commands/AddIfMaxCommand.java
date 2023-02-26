@@ -2,11 +2,12 @@ package org.example.commands;
 
 import org.example.collection.TypeCollection;
 import org.example.director.ProductDirector;
+import org.example.exceptions.ValidException;
 import org.example.products.Product;
 
 import java.util.Collection;
 
-public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, Product, String> {
+public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "add_if_max: добавить новый элемент в коллекцию, если его значение наибольшего элемента в этой коллекции";
     private ProductDirector productDirector;
 
@@ -21,20 +22,24 @@ public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, P
     }
 
     @Override
-    public void execute(String arg) {
+    public void execute(String... args) {
         productDirector.getBuilder().update(new Product());
-        productDirector.build();
-        Product product = productDirector.getBuilder().getProduct();
-        if (super.getCollection().size() == 0) {
-            super.getCollection().add(product);
-            System.out.println("Product was add");
-            return;
-        }
-        if (product.compareTo(super.getCollection().head() ) < 0) {
-            super.getCollection().add(product);
-            System.out.println("Product was add");
-        } else {
-            System.out.println("Your product less than max of collection or equals it");
+        try {
+            productDirector.build();
+            Product product = productDirector.getBuilder().getProduct();
+            if (super.getCollection().size() == 0) {
+                super.getCollection().add(product);
+                System.out.println("Product was add");
+                return;
+            }
+            if (product.compareTo(super.getCollection().head()) < 0) {
+                super.getCollection().add(product);
+                System.out.println("Product was add");
+            } else {
+                System.out.println("Your product less than max of collection or equals it");
+            }
+        } catch (ValidException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

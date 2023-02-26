@@ -6,7 +6,7 @@ import org.example.products.Product;
 
 import java.util.Collection;
 
-public class ShowCommand <T extends Collection<Product>> extends Command<T, Product, String> {
+public class ShowCommand <T extends Collection<Product>> extends Command<T, Product> {
     public final String description = "show: вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
     public ShowCommand(String name, ProductCollection<T> myCollection) {
         super(myCollection, name);
@@ -23,7 +23,7 @@ public class ShowCommand <T extends Collection<Product>> extends Command<T, Prod
     }
 
     @Override
-    public void execute(String arg) {
+    public void execute(String ... args) {
         super.getCollection().show();
     }
 }

@@ -5,7 +5,7 @@ import org.example.products.Product;
 
 import java.util.Collection;
 
-public class InfoCommand<T extends Collection<Product>> extends Command<T, Product, String> {
+public class InfoCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "info: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д)";
     public InfoCommand(String name, TypeCollection<T, Product> collection) {
         super(collection, name);
@@ -15,7 +15,7 @@ public class InfoCommand<T extends Collection<Product>> extends Command<T, Produ
         return description;
     }
     @Override
-    public void execute(String arg) {
+    public void execute(String ... args) {
         super.getCollection().info();
     }
 }

@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
-public class CountLessMeasure<T extends Collection<Product>> extends Command<T, Product, String> {
+public class CountLessMeasure<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "count_less_measure unitOfMeasure: вывести количество элементов, значение поля которых меньше заданного";
 
     public CountLessMeasure(String name, ProductCollection<T> collection) {
@@ -27,9 +27,9 @@ public class CountLessMeasure<T extends Collection<Product>> extends Command<T, 
     }
 
     @Override
-    public void execute(String arg) {
-        if (checkArg(arg)) {
-            int value = Integer.parseInt(arg);
+    public void execute(String ... args) {
+        if (checkArg(args[0])) {
+            int value = Integer.parseInt(args[0]);
             UnitOfMeasure unitOfMeasure = UnitOfMeasure.getMeasureByNumber(value);
             super.getCollection().countLessMeasure(unitOfMeasure);
         } else {

@@ -1,12 +1,14 @@
 package org.example.commands;
 
+import org.example.builders.FileProductBuilder;
 import org.example.collection.ProductCollection;
 import org.example.director.ProductDirector;
+import org.example.exceptions.ValidException;
 import org.example.products.Product;
 
 import java.util.Collection;
 
-public class AddCommand<T extends Collection<Product>> extends Command<T, Product, String> {
+public class AddCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "add {element}: добавить новый элемент в коллекцию";
     private ProductDirector productDirector;
 
@@ -21,10 +23,22 @@ public class AddCommand<T extends Collection<Product>> extends Command<T, Produc
     }
 
     @Override
-    public void execute(String arg) {
-        productDirector.getBuilder().update(new Product());
-        productDirector.build();
-        Product product = productDirector.getBuilder().getProduct();
-        super.getCollection().add(product);
+    public void execute(String... args) {
+        try {
+            if (args.length == 16) {
+                ProductDirector productDirector1 = new ProductDirector(new FileProductBuilder(args));
+                productDirector1.getBuilder().update(new Product());
+                productDirector1.build();
+                Product product = productDirector1.getBuilder().getProduct();
+                super.getCollection().add(product);
+            } else {
+                productDirector.getBuilder().update(new Product());
+                productDirector.build();
+                Product product = productDirector.getBuilder().getProduct();
+                super.getCollection().add(product);
+            }
+        } catch (ValidException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

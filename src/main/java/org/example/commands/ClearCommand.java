@@ -4,7 +4,7 @@ import org.example.products.Product;
 
 import java.util.Collection;
 
-public class ClearCommand <T extends Collection<Product>> extends Command<T, Product, String> {
+public class ClearCommand <T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "clear: очистить коллекцию";
 
     public ClearCommand(String name, ProductCollection<T> collection) {
@@ -21,7 +21,7 @@ public class ClearCommand <T extends Collection<Product>> extends Command<T, Pro
         return super.getName();
     }
     @Override
-    public void execute(String arg) {
+    public void execute(String ... args) {
         super.getCollection().clear();
     }
 }
