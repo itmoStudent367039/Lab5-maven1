@@ -1,5 +1,6 @@
 package org.example.commands;
 
+import org.example.builders.FileProductBuilder;
 import org.example.collection.TypeCollection;
 import org.example.director.ProductDirector;
 import org.example.exceptions.ValidException;
@@ -23,10 +24,18 @@ public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, P
 
     @Override
     public void execute(String... args) {
-        productDirector.getBuilder().update(new Product());
         try {
-            productDirector.build();
-            Product product = productDirector.getBuilder().getProduct();
+            Product product;
+            if (args.length == 16) {
+                ProductDirector productDirector1 = new ProductDirector(new FileProductBuilder(args));
+                productDirector1.getBuilder().update(new Product());
+                productDirector1.build();
+                product = productDirector1.getBuilder().getProduct();
+            } else {
+                productDirector.getBuilder().update(new Product());
+                productDirector.build();
+                product = productDirector.getBuilder().getProduct();
+            }
             if (super.getCollection().size() == 0) {
                 super.getCollection().add(product);
                 System.out.println("Product was add");
