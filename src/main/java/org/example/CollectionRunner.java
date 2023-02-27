@@ -13,7 +13,19 @@ import org.example.util.DataUtil;
 
 import java.io.File;
 import java.util.*;
-
+/**
+ * ProductDirector - директор для BuildProduct, с помощью него получаю объекты;
+ *
+ * CommandEditor - хранит в себе Map<Command.getName(), Command),
+ * метод execute() - для выполнения;
+ *
+ * Application - для запуска всей проги в бесконечном цикле, в нем организована логика чтения
+ * с консоли, вызывается в этом цикле метод execute(String[] userInput)
+ *
+ * P.S. постарался расписать ту часть кода, которую сложно прочитать -> *Не только в этом классе,
+ * не судите строго пожалуйста
+ *
+ */
 public class CollectionRunner {
     public static void main(String[] args) {
         DataUtil util = DataUtil.getInstance();

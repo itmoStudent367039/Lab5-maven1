@@ -15,6 +15,10 @@ public class Application {
     public Application(CommandEditor editor) {
         commandEditor = editor;
     }
+    /**
+     * split(" ", 2) - только для консольного ввода (когда путь в файлу читаю, чтобы пробелы не учитывались при split(),
+     * script чтение в самой комманде;
+     */
     private String[] getUserInput() {
         String[] input = null;
         while (Objects.isNull(input)) {

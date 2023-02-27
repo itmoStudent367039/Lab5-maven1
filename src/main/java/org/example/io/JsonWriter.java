@@ -16,7 +16,9 @@ import java.util.*;
 public class JsonWriter<T> {
     private final ObjectWriter writer;
     private final ObjectMapper mapper;
-
+    /**
+     * Тут только настройка сериализатора
+     */
     public JsonWriter() {
         mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -29,7 +31,9 @@ public class JsonWriter<T> {
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE));
         writer = mapper.writer(new DefaultPrettyPrinter());
     }
-
+    /**
+     * Если файл с исходными данными - user-write, то предлагаем ввести путь до файла
+     */
     public void writeToFileCollection(File file, List<T> collection) {
         File value = file;
         if (!checkFileToWrite(file)) {
@@ -50,8 +54,7 @@ public class JsonWriter<T> {
 
     private File getFileFromUserInput() {
         Scanner scanner = new Scanner(System.in);
-        File file = null;
-        while (Objects.isNull(file)) {
+        while (true) {
             File file1 = new File(scanner.nextLine());
             if (checkFileToWrite(file1)) {
                 return file1;
@@ -59,6 +62,5 @@ public class JsonWriter<T> {
                 System.out.println("Uncorrect input");
             }
         }
-        return file;
     }
 }

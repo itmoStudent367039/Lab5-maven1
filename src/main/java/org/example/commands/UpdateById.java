@@ -20,7 +20,10 @@ public class UpdateById<T extends Collection<Product>> extends Command<T, Produc
     public String getDescription() {
         return description;
     }
-
+    /**
+     * беру вверхушку, так как элементы по убыванию отсортированы(price, а если цены равны,
+     * то по имени сортировка(алфавит -> убывание (a, b, c ....))
+     */
     @Override
     public void execute(String ... args) {
         try {

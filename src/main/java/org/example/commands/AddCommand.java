@@ -31,7 +31,10 @@ public class AddCommand<T extends Collection<Product>> extends Command<T, Produc
             System.out.println(e.getMessage());
         }
     }
-
+    /**
+     * Вот здесь логика, если execute_script, потому что там комманда
+     * вводиться с аргументами ,addIfMax - тоже самое
+     */
     static Product buildProduct(ProductDirector productDirector, String[] args) throws ValidException {
         if (args.length == 16) {
             ProductDirector productDirector1 = new ProductDirector(new ArgsProductBuilder(args));

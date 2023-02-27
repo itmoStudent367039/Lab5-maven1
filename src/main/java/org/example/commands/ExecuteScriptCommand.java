@@ -8,6 +8,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * В кратце: тут организовано чтение из консоли, рекурсию победил счетчиком, который позволяет считать только 50 команд, даже если в скрипте будет (exexutescript anyFile...),
+ * т.к. ExScrCommand - объект в ед. экзэмляре, но хочу сделать подругому, это временный вариант(
+ * При чтении делю строку сразу по пробелам и засовываю String[] args в метод execute() -> CommandEditor
+ */
 public class ExecuteScriptCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "execute_script file_name: считать и исполнить скрипт из указанного файла";
     private CommandEditor editor;
@@ -23,6 +28,9 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
         return description;
     }
 
+    /**
+     * ex(String ...args) - тут путь к файлу где скрипт
+     */
     @Override
     public void execute(String... arg) {
         List<String[]> list = readFileLinesOrReturnNull(getCurrentFileOrReturnNull(arg[0]));
@@ -42,7 +50,9 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
         File file = new File(arg);
         return Checker.checkFileValidity(file) ? file : null;
     }
-
+    /**
+     * Если в файле скрипта снова команда исполнить скрипт то делю только по первому пробелу, иначе (exScr /Smth smth/file) - такое не будет парситься
+     */
     private List<String[]> readFileLinesOrReturnNull(File file) {
         if (Objects.isNull(file)) {
             return null;

@@ -7,7 +7,12 @@ import org.example.util.Checker;
 
 import java.io.*;
 import java.util.*;
-
+/**
+ * T - класс объекты которого десерилизуются, в кострукторе настройки парсера
+ * Логика такая - считываем все из файла в char[] buffer, после преобразовываем его в строку и
+ * парсим (если вдруг ошибка чтения - возвращаем пустую строку)
+ *
+ */
 public class JsonReader<T> {
     private final File file;
     private List<T> elementList;
@@ -41,6 +46,9 @@ public class JsonReader<T> {
         return Objects.isNull(buffer) ? "" : String.valueOf(buffer);
     }
 
+    /**
+     * Пустая строка игнорируется (Checker), получившийся T[] -> List<T>
+     */
     private void parseSetElementsListFromFile(String data) {
         if (Checker.checkDataToParse(data)) {
             try {
