@@ -1,11 +1,9 @@
 package org.example;
 
 import org.example.application.Application;
-import org.example.builders.ProductConsoleBuilder;
 import org.example.collection.ProductCollection;
 import org.example.collection.ProductQueue;
 import org.example.commands.*;
-import org.example.director.ProductDirector;
 import org.example.io.JsonReader;
 import org.example.io.JsonWriter;
 import org.example.products.Product;
@@ -25,6 +23,8 @@ import java.util.*;
  * P.S. постарался расписать ту часть кода, которую сложно прочитать -> *Не только в этом классе,
  * не судите строго пожалуйста
  *
+ *
+ *
  */
 public class CollectionRunner {
     public static void main(String[] args) {
@@ -33,10 +33,8 @@ public class CollectionRunner {
         JsonReader<Product> reader = new JsonReader<>(homeFile, Product[].class);
         ProductCollection<Queue<Product>> collection = new ProductQueue(reader.getElementsAsList(), homeFile);
         JsonWriter<Product> writer = new JsonWriter<>();
-
-        ProductDirector productDirector = new ProductDirector(new ProductConsoleBuilder());
         CommandEditor manager = new CommandEditor() {{
-            addCommand(new AddCommand<>("add", collection, productDirector));
+            addCommand(new AddCommand<>("add", collection));
             addCommand(new ExitCommand<>("exit"));
             addCommand(new ShowCommand<>("show", collection));
             addCommand(new ClearCommand<>("clear", collection));
@@ -45,11 +43,11 @@ public class CollectionRunner {
             addCommand(new HelpCommand<>("help", collection, this));
             addCommand(new HistoryCommand<>("history", collection, this));
             addCommand(new RemoveByIdCommand<>("remove_by_id", collection));
-            addCommand(new UpdateById<>("update_by_id", collection, productDirector));
+            addCommand(new UpdateById<>("update_by_id", collection));
             addCommand(new PrintOwnersCommand<>("print_owners", collection));
             addCommand(new CountLessMeasure<>("count_less_measure", collection));
             addCommand(new GroupElementsByNameCommand<>("group_products_by_name", collection));
-            addCommand(new AddIfMaxCommand<>("add_if_max", collection, productDirector));
+            addCommand(new AddIfMaxCommand<>("add_if_max", collection));
             addCommand(new SaveCommand<>("save", collection, writer));
             addCommand(new ExecuteScriptCommand<>("execute_script", this));
         }};

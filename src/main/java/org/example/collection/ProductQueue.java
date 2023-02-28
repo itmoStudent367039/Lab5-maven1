@@ -125,7 +125,7 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
                         .collect(Collectors.joining(System.lineSeparator())));
     }
 
-    private boolean addValidElementsToCollection(Collection<Product> list) {
+    private void addValidElementsToCollection(Collection<Product> list) {
         for (Product product : list) {
             try {
                 if (product.isValid()) {
@@ -135,6 +135,5 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
                 System.out.println(e.getMessage());
             }
         }
-        return true;
     }
 }

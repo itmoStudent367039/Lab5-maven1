@@ -10,17 +10,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class ArgsProductBuilder implements ProductBuilder {
-    private String[] args;
-    private Product product;
+    private final Product product = new Product();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public ArgsProductBuilder(String... args) {
-        this.args = args;
-    }
-
     @Override
-    public void setName() throws ValidException {
-        String name = args[0];
+    public void setName(String name) throws ValidException {
         if (!BuildChecker.checkProductName(name)) {
             throw new ValidException("Uncorrect input (product's name)");
         }
@@ -28,9 +22,7 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
-    public void setCoordinates() throws ValidException {
-        String x = args[1];
-        String y = args[2];
+    public void setCoordinates(String x, String y) throws ValidException {
         if (!BuildChecker.checkXCoordinate(x) || !BuildChecker.checkYCoordinate(y)) {
             throw new ValidException("Uncorrect input (product's coordinates)");
         }
@@ -38,8 +30,8 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
-    public void setCreationDate() throws ValidException {
-        String datetime = String.format("%s %s", args[3], args[4]);
+    public void setCreationDate(String date, String time) throws ValidException {
+        String datetime = String.format("%s %s", date, time);
         ZonedDateTime creationDate;
         try {
             LocalDateTime localDateTime = LocalDateTime.parse(datetime, formatter);
@@ -51,8 +43,7 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
-    public void setPrice() throws ValidException {
-        String price = args[5];
+    public void setPrice(String price) throws ValidException {
         if (!BuildChecker.checkProductPrice(price)) {
             throw new ValidException("Uncorrect input (product's price)");
         }
@@ -60,8 +51,7 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
-    public void setUnitOfMeasure() throws ValidException {
-        String measure = args[6];
+    public void setUnitOfMeasure(String measure) throws ValidException {
         if (!BuildChecker.checkMeasure(measure)) {
             throw new ValidException("Uncorrect input (measure-enum)");
         }
@@ -69,16 +59,7 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
-    public void setOwner() throws ValidException {
-        String name = args[7];
-        String height = args[8];
-        String eyes = args[9];
-        String hair = args[10];
-        String country = args[11];
-        String x = args[12];
-        String y = args[13];
-        String z = args[14];
-        String locationName = args[15];
+    public void setOwner(String name, String height, String eyes, String hair, String country, String x, String y, String z, String locationName) throws ValidException {
         if (!BuildChecker.checkProductName(name) || !BuildChecker.checkHeight(height) || !BuildChecker.checkColor(eyes) || !BuildChecker.checkColor(hair) || !BuildChecker.checkCountry(country)
                 || !BuildChecker.checkDoubleCoordinate(x) || !BuildChecker.checkDoubleCoordinate(y) || !BuildChecker.checkXCoordinate(z) || !BuildChecker.checkLocationName(locationName)) {
             throw new ValidException("Uncorrect owner's fields");
@@ -88,12 +69,7 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
-    public Product getProduct() {
-        return product;
-    }
-
-    @Override
-    public void update(Product product) {
-        this.product = product;
+    public Product getProduct() throws ValidException {
+        return product.isValid() ? product : null;
     }
 }

@@ -1,5 +1,6 @@
 package org.example.builders;
 
+import org.example.exceptions.ValidException;
 import org.example.products.*;
 
 import java.time.LocalDateTime;
@@ -10,19 +11,17 @@ import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class ProductConsoleBuilder implements ProductBuilder {
-    private Product product;
+public class ProductConsoleBuilder {
+    private final Product product;
     private final Scanner scanner = new Scanner(System.in);
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    @Override
-    public void update(Product product) {
+    public ProductConsoleBuilder(Product product) {
         this.product = product;
     }
     private String input() {
         System.out.print("> ");
         return scanner.nextLine();
     }
-    @Override
     public void setName() {
         String productName = null;
         while (Objects.isNull(productName)) {
@@ -37,7 +36,6 @@ public class ProductConsoleBuilder implements ProductBuilder {
         product.setName(productName);
     }
 
-    @Override
     public void setCoordinates() {
         Long x = null;
         String y = "";
@@ -66,7 +64,6 @@ public class ProductConsoleBuilder implements ProductBuilder {
         this.product.setCoordinates(new Coordinates(x, Double.parseDouble(y)));
     }
 
-    @Override
     public void setCreationDate() {
         ZonedDateTime creationDate = null;
         LocalDateTime localDateTime;
@@ -86,7 +83,6 @@ public class ProductConsoleBuilder implements ProductBuilder {
         product.setCreationDate(creationDate);
     }
 
-    @Override
     public void setPrice() {
         int productPrice = 0;
         while (productPrice == 0) {
@@ -101,7 +97,6 @@ public class ProductConsoleBuilder implements ProductBuilder {
         product.setPrice(productPrice);
     }
 
-    @Override
     public void setUnitOfMeasure() {
         UnitOfMeasure measure = null;
         while (Objects.isNull(measure)) {
@@ -117,7 +112,6 @@ public class ProductConsoleBuilder implements ProductBuilder {
         product.setUnitOfMeasure(measure);
     }
 
-    @Override
     public void setOwner() {
         String name = null;
         int height = 0;
@@ -214,9 +208,7 @@ public class ProductConsoleBuilder implements ProductBuilder {
         }
         this.product.setOwner(new Person(name, height, eyes, hair, country, new Location(x, y, z, locationName)));
     }
-
-    @Override
-    public Product getProduct() {
-        return product;
+    public Product getProduct() throws ValidException {
+        return product.isValid() ? product : null;
     }
 }
