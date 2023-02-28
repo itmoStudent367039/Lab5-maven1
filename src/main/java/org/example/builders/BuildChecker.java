@@ -5,42 +5,48 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 public class BuildChecker {
+    private static String integer = "[0-9]{1,9}";
+    private static String fromOneToFour = "[1-4]";
+    private static String longValue = "^-?[0-9]{1,17}$";
+    private static String doubleValue = "^[-+]?[0-9]*\\.?[0-9]+$";
+    private static String fromOneToSix = "[1-6]";
+    private static String fromOneToThree = "[1-3]";
     public static boolean checkProductName(String name) {
         return !name.isEmpty();
     }
     public static boolean checkProductPrice(String price) {
-        return price.matches("[0-9]{1,9}") && !price.equals("0");
+        return price.matches(integer);
     }
     public static boolean checkMeasure(String measure) {
-        return measure.matches("[1-4]");
+        return measure.matches(fromOneToFour);
     }
     public static boolean checkLocalDate(LocalDateTime date) {
         return date.getYear() >= 1996 && date.getYear() <= 2023;
     }
     public static boolean checkXCoordinate(String x) {
-            return x.length() < 18 && x.matches("^-?[0-9]+$");
+            return x.matches(longValue);
     }
     public static boolean checkHeight(String height) {
-        return height.length() < 10 && !height.equals("0") && height.matches("[0-9]{1,9}");
+        return height.matches(integer);
     }
     public static boolean checkYCoordinate(String y) {
-        boolean value = y.length() < 18 && y.matches("^[-+]?[0-9]*\\.?[0-9]+$");
+        boolean value = y.length() < 18 && y.matches(doubleValue);
         if (value) {
             Double y1 = Double.parseDouble(y);
-            return y1.compareTo(Double.valueOf("628")) == 0 || y1.compareTo(Double.valueOf("628")) < 0;
+            return (y1.compareTo(Double.valueOf("628")) == 0) || (y1.compareTo(Double.valueOf("628")) < 0);
         }
         return false;
     }
     public static boolean checkColor(String color) {
-        return color.matches("[1-6]");
+        return color.matches(fromOneToSix);
     }
     public static boolean checkDoubleCoordinate(String coordinate) {
-        return coordinate.length() < 18 && coordinate.matches("^[-+]?[0-9]*\\.?[0-9]+$");
+        return coordinate.length() < 18 && coordinate.matches(doubleValue);
     }
     public static boolean checkLocationName(String name) {
         return !name.isEmpty() && name.length() <= 871;
     }
     public static boolean checkCountry(String country) {
-        return country.matches("[1-3]");
+        return country.matches(fromOneToThree);
     }
 }

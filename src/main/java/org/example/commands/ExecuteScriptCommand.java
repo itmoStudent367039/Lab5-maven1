@@ -1,6 +1,6 @@
 package org.example.commands;
 
-import org.example.collection.TypeCollection;
+import org.example.exceptions.ExecuteException;
 import org.example.exceptions.ValidException;
 import org.example.products.Product;
 import org.example.util.Checker;
@@ -17,11 +17,13 @@ import java.util.*;
 public class ExecuteScriptCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "execute_script file_name: считать и исполнить скрипт из указанного файла";
     private final String name = "execute_script";
+    private Controller executeController;
     private CommandEditor editor;
     private int counter = 0;
 
     public ExecuteScriptCommand(CommandEditor editor) {
         this.editor = editor;
+        executeController = new Controller();
     }
 
     @Override
@@ -39,27 +41,30 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
      */
     @Override
     public void execute(String... arg) {
-        List<String[]> list = readFileLinesOrReturnNull(getCurrentFileOrReturnNull(arg[0]));
         try {
+            List<String[]> list = readFileLinesOrReturnNull(getCurrentFileOrReturnNull(arg[0]));
             Optional.ofNullable(list).orElseThrow(() -> new ValidException("Не удалось прочитать файл"));
             for (String[] cmdArgs : list) {
                 editor.execute(cmdArgs);
-                if (counter == 50) {break;}
-                counter++;
             }
-        } catch (ValidException e) {
+        } catch (ValidException | ExecuteException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private File getCurrentFileOrReturnNull(String arg) {
+    private File getCurrentFileOrReturnNull(String arg) throws ExecuteException {
         File file = new File(arg);
-        return Checker.checkFileValidity(file) ? file : null;
+        if (Checker.checkFileValidity(file)) {
+            executeController.addExc(arg);
+            return file;
+        }
+        return null;
     }
+
     /**
      * Если в файле скрипта снова команда исполнить скрипт то делю только по первому пробелу, иначе (exScr /Smth smth/file) - такое не будет парситься
      */
-    private List<String[]> readFileLinesOrReturnNull(File file) {
+    private List<String[]> readFileLinesOrReturnNull(File file) throws ExecuteException {
         if (Objects.isNull(file)) {
             return null;
         } else {
@@ -72,6 +77,7 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
                         String[] cmdArgs = line.split(" ");
                         if (cmdArgs[0].equals("execute_script")) {
                             String[] cmdArg = line.split(" ", 2);
+                            executeController.addExc(cmdArg[1]);
                             list.add(cmdArg);
                         } else {
                             list.add(cmdArgs);
@@ -82,6 +88,27 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
             } catch (IOException e) {
                 System.out.println(e.getMessage());
                 return null;
+            }
+        }
+    }
+
+    private class Controller {
+        private HashSet<String> excHistory;
+        private int controlSize;
+
+        private Controller() {
+            excHistory = new HashSet<>();
+        }
+
+        private void addExc(String exc) throws ExecuteException {
+            excHistory.add(exc);
+            controlSize = controlSize + 1;
+            checkRecursion();
+        }
+
+        private void checkRecursion() throws ExecuteException {
+            if (excHistory.size() != controlSize) {
+                throw new ExecuteException("Рекурсия!");
             }
         }
     }
