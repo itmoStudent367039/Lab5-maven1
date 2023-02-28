@@ -10,9 +10,10 @@ import java.util.Collection;
 
 public class AddCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "add {element}: добавить новый элемент в коллекцию";
+    private final String name = "add";
 
     public AddCommand(String name, ProductCollection<T> collection) {
-        super(collection, name);
+        super(collection);
     }
 
     @Override
