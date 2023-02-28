@@ -8,9 +8,15 @@ import java.util.Objects;
 
 public class HeadCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "head: вывести первый элемент коллекции";
+    private final String name = "head";
 
-    public HeadCommand(String name, TypeCollection<?, Product> collection) {
-        super(collection, name);
+    public HeadCommand(TypeCollection<?, Product> collection) {
+        super(collection);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

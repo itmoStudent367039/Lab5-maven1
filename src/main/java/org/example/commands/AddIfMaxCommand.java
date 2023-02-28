@@ -8,9 +8,15 @@ import java.util.Collection;
 
 public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "add_if_max: добавить новый элемент в коллекцию, если его значение наибольшего элемента в этой коллекции";
+    private final String name = "add_if_max";
 
-    public AddIfMaxCommand(String name, TypeCollection<?, Product> collection) {
-        super(collection, name);
+    public AddIfMaxCommand(TypeCollection<?, Product> collection) {
+        super(collection);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

@@ -7,9 +7,15 @@ import java.util.Collection;
 
 public class PrintOwnersCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "print_owners: вывести значения поля owner для всех элементов колекции в порядке возрастания";
+    private final String name = "print_owners";
 
-    public PrintOwnersCommand(String name, ProductCollection<T> collection) {
-        super(collection, name);
+    public PrintOwnersCommand(ProductCollection<T> collection) {
+        super(collection);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

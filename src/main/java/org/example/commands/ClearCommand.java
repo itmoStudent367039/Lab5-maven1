@@ -6,9 +6,10 @@ import java.util.Collection;
 
 public class ClearCommand <T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "clear: очистить коллекцию";
+    private final String name = "clear";
 
-    public ClearCommand(String name, ProductCollection<T> collection) {
-        super(collection, name);
+    public ClearCommand(ProductCollection<T> collection) {
+        super(collection);
     }
 
     @Override
@@ -18,7 +19,7 @@ public class ClearCommand <T extends Collection<Product>> extends Command<T, Pro
 
     @Override
     public String getName() {
-        return super.getName();
+        return name;
     }
     @Override
     public void execute(String ... args) {

@@ -9,10 +9,13 @@ public abstract class Command<T extends Collection<E>, E> {
     public Command(TypeCollection<?, E> collection) {
         this.collection = collection;
     }
-    abstract public String getDescription();
-   /* public Command(String name) {
-        this.name = name;
-    }*/
+
+    public Command() {
+    }
+
+    public String getDescription() {
+        return "default-description";
+    }
     public String getName() {
         return "default-name";
     }

@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 
 public class HelpCommand<T extends Collection<Product>> extends Command<T, Product> {
     private CommandEditor editor;
+    private final String name = "help";
     private final String description = "help: вывести справку по доступным командам";
 
-    public HelpCommand(String name, ProductCollection<T> collection, CommandEditor commandDirector) {
-        super(collection, name);
+    public HelpCommand(ProductCollection<T> collection, CommandEditor commandDirector) {
+        super(collection);
         this.editor = commandDirector;
     }
-
     @Override
     public String getDescription() {
         return description;
@@ -23,7 +23,7 @@ public class HelpCommand<T extends Collection<Product>> extends Command<T, Produ
 
     @Override
     public String getName() {
-        return super.getName();
+        return name;
     }
 
     @Override

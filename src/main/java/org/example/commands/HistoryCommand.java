@@ -9,11 +9,17 @@ import java.util.List;
 
 public class HistoryCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "history: вывести последние 11 команд (без их аргументов)";
+    private final String name = "history";
     private CommandEditor commandEditor;
 
-    public HistoryCommand(String name, TypeCollection<T, Product> collection, CommandEditor editor) {
-        super(collection, name);
+    public HistoryCommand(TypeCollection<T, Product> collection, CommandEditor editor) {
+        super(collection);
         commandEditor = editor;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

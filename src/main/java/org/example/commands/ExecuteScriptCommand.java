@@ -1,5 +1,6 @@
 package org.example.commands;
 
+import org.example.collection.TypeCollection;
 import org.example.exceptions.ValidException;
 import org.example.products.Product;
 import org.example.util.Checker;
@@ -15,12 +16,17 @@ import java.util.*;
  */
 public class ExecuteScriptCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "execute_script file_name: считать и исполнить скрипт из указанного файла";
+    private final String name = "execute_script";
     private CommandEditor editor;
     private int counter = 0;
 
-    public ExecuteScriptCommand(String name, CommandEditor editor) {
-        super(name);
+    public ExecuteScriptCommand(CommandEditor editor) {
         this.editor = editor;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

@@ -10,9 +10,15 @@ import java.util.UUID;
 
 public class UpdateById<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "update id {element}: обновить значения элемента из коллекции по его id";
+    private final String name = "update";
 
-    public UpdateById(String name, ProductCollection<T> collection) {
-        super(collection, name);
+    public UpdateById(ProductCollection<T> collection) {
+        super(collection);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

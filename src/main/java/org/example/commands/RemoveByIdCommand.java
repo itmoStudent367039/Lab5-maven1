@@ -8,9 +8,15 @@ import java.util.UUID;
 
 public class RemoveByIdCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "remove_by_id id: удалить элемент из коллекции по его id, который равен заданному";
+    private final String name = "remove_by_id";
 
-    public RemoveByIdCommand(String name, ProductCollection<T> collection) {
-        super(collection, name);
+    public RemoveByIdCommand(ProductCollection<T> collection) {
+        super(collection);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

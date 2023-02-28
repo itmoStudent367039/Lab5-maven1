@@ -59,13 +59,8 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
-    public void setOwner(String name, String height, String eyes, String hair, String country, String x, String y, String z, String locationName) throws ValidException {
-        if (!BuildChecker.checkProductName(name) || !BuildChecker.checkHeight(height) || !BuildChecker.checkColor(eyes) || !BuildChecker.checkColor(hair) || !BuildChecker.checkCountry(country)
-                || !BuildChecker.checkDoubleCoordinate(x) || !BuildChecker.checkDoubleCoordinate(y) || !BuildChecker.checkXCoordinate(z) || !BuildChecker.checkLocationName(locationName)) {
-            throw new ValidException("Uncorrect owner's fields");
-        }
-        product.setOwner(new Person(name, Integer.parseInt(height), Color.getColorByNumber(Integer.parseInt(eyes)), Color.getColorByNumber(Integer.parseInt(hair)),
-                Country.getCountryByNumber(Integer.parseInt(country)), new Location(Double.parseDouble(x), Double.parseDouble(y), Long.parseLong(z), locationName)));
+    public void setOwner(Person owner) {
+        product.setOwner(owner);
     }
 
     @Override

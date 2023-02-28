@@ -7,9 +7,10 @@ import org.example.products.Product;
 import java.util.Collection;
 
 public class ShowCommand <T extends Collection<Product>> extends Command<T, Product> {
-    public final String description = "show: вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
-    public ShowCommand(String name, ProductCollection<T> myCollection) {
-        super(myCollection, name);
+    private final String description = "show: вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
+    private final String name = "show";
+    public ShowCommand(ProductCollection<T> myCollection) {
+        super(myCollection);
     }
 
     @Override
@@ -19,7 +20,7 @@ public class ShowCommand <T extends Collection<Product>> extends Command<T, Prod
 
     @Override
     public String getName() {
-        return super.getName();
+        return name;
     }
 
     @Override

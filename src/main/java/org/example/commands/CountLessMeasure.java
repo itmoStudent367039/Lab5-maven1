@@ -12,9 +12,15 @@ import java.util.Optional;
 
 public class CountLessMeasure<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "count_less_measure unitOfMeasure: вывести количество элементов, значение поля которых меньше заданного";
+    private final String name = "count_less_measure";
 
-    public CountLessMeasure(String name, ProductCollection<T> collection) {
-        super(collection, name);
+    public CountLessMeasure(ProductCollection<T> collection) {
+        super(collection);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     private boolean checkArg(String arg) {

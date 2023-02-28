@@ -43,6 +43,7 @@ public class CommandEditor {
             } else {
                 System.out.println("Такой команды нет");
             }
+        } else {
             System.out.println("Uncorrect input");
         }
     }

@@ -10,10 +10,16 @@ import java.util.Collection;
 
 public class SaveCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "save: сохранить коллекцию в файл";
+    private final String name = "save";
     private JsonWriter<Product> writer;
-    public SaveCommand(String name, ProductCollection<T> collection, JsonWriter<Product> writer) {
-        super(collection, name);
+    public SaveCommand(ProductCollection<T> collection, JsonWriter<Product> writer) {
+        super(collection);
         this.writer = writer;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
