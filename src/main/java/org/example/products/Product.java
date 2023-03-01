@@ -2,18 +2,16 @@ package org.example.products;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.example.exceptions.ValidException;
 
-import java.util.Comparator;
+
 import java.util.Objects;
 import java.util.UUID;
 
 @Data
 @JsonAutoDetect
 public class Product implements Valid, Comparable<Product> {
-    @JsonIgnore
     private UUID id;
     private String name;
     private Coordinates coordinates;
@@ -25,7 +23,6 @@ public class Product implements Valid, Comparable<Product> {
 
     public Product() {
         super();
-        id = UUID.randomUUID();
     }
 
     @Override

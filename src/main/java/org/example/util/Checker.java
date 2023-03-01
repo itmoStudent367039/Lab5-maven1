@@ -27,14 +27,6 @@ public class Checker {
                 return false;
             }
         }
-        if (!file.getPath().matches("\\.(txt|json)$")) {
-            try {
-                throw new FileNotFoundException("Uncorrect format of file");
-            } catch (FileNotFoundException e) {
-                System.out.println(e.getMessage());
-                return false;
-            }
-        }
         return true;
     }
 
@@ -51,14 +43,6 @@ public class Checker {
             try {
                 throw new IOException("-w for file");
             } catch (IOException e) {
-                System.out.println(e.getMessage());
-                return false;
-            }
-        }
-        if (!file.getPath().matches("\\.(txt|json)$")) {
-            try {
-                throw new FileNotFoundException("Uncorrect format of file");
-            } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
                 return false;
             }

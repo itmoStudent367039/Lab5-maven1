@@ -1,11 +1,7 @@
 package org.example.application;
 
-import org.example.collection.ProductCollection;
-import org.example.collection.TypeCollection;
 import org.example.commands.CommandEditor;
-import org.example.products.Product;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Scanner;
 
