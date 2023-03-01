@@ -1,7 +1,6 @@
 package org.example.commands;
 
 import org.example.exceptions.ExecuteException;
-import org.example.exceptions.ValidException;
 import org.example.products.Product;
 import org.example.util.Checker;
 
@@ -19,7 +18,6 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
     private final String name = "execute_script";
     private Controller executeController;
     private CommandEditor editor;
-    private int counter = 0;
 
     public ExecuteScriptCommand(CommandEditor editor) {
         this.editor = editor;
@@ -43,18 +41,20 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
     public void execute(String... arg) {
         try {
             List<String[]> list = readFileLinesOrReturnNull(getCurrentFileOrReturnNull(arg[0]));
-            Optional.ofNullable(list).orElseThrow(() -> new ValidException("Не удалось прочитать файл"));
+            if (Objects.isNull(list)) {
+                return;
+            }
             for (String[] cmdArgs : list) {
                 editor.execute(cmdArgs);
             }
-        } catch (ValidException | ExecuteException e) {
+        } catch (ExecuteException e) {
             System.out.println(e.getMessage());
         }
     }
 
     private File getCurrentFileOrReturnNull(String arg) throws ExecuteException {
         File file = new File(arg);
-        if (Checker.checkFileValidity(file)) {
+        if (Checker.checkFileValidityForRead(file)) {
             executeController.addExc(arg);
             return file;
         }

@@ -10,12 +10,13 @@ import java.util.logging.Logger;
 public class Checker {
     private static final Logger logger = Logger.getLogger(Checker.class.getName());
 
-    public static boolean checkFileValidity(File file) {
-        if ((!(file.exists() && file.isFile())) && !(file.getName().equals(""))) {
+    public static boolean checkFileValidityForRead(File file) {
+        if (!(file.exists() && file.isFile())) {
             try {
                 throw new FileNotFoundException("Файл по данному пути не найден");
             } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
+                return false;
             }
         }
         if (!file.canRead()) {
@@ -23,9 +24,46 @@ public class Checker {
                 throw new IOException("-r for file");
             } catch (IOException e) {
                 System.out.println(e.getMessage());
+                return false;
             }
         }
-        return file.canRead() && file.isFile() && file.exists();
+        if (!file.getPath().matches("\\.(txt|json)$")) {
+            try {
+                throw new FileNotFoundException("Uncorrect format of file");
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean checkFileValidityForWrite(File file) {
+        if (!(file.exists() && file.isFile())) {
+            try {
+                throw new FileNotFoundException("Файл по данному пути не найден");
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        }
+        if (!file.canWrite()) {
+            try {
+                throw new IOException("-w for file");
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        }
+        if (!file.getPath().matches("\\.(txt|json)$")) {
+            try {
+                throw new FileNotFoundException("Uncorrect format of file");
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean checkDataToParse(String line) {
@@ -40,15 +78,15 @@ public class Checker {
     }
 
     public static String getEnvValidity(String env) {
-        try {
-            return Optional.ofNullable(env).orElseThrow(() -> new FileNotFoundException("Path doesn't exist"));
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage() + ": Это можно не писать в консоль");
-            return "";
+        if (!Objects.isNull(env)) {
+            return env;
+        } else {
+            try {
+                throw new FileNotFoundException("Path doesn't exist");
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+                return "";
+            }
         }
     }
-    public static boolean fileIsEmpty(File file) {
-        return file.length() == 0;
-    }
-
 }

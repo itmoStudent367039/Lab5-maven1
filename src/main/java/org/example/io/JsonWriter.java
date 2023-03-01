@@ -5,9 +5,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.example.collection.ProductCollection;
-import org.example.collection.TypeCollection;
-import org.example.products.Product;
+import org.example.util.Checker;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +14,7 @@ import java.util.*;
 public class JsonWriter<T> {
     private final ObjectWriter writer;
     private final ObjectMapper mapper;
+    private final Scanner scanner = new Scanner(System.in);
     /**
      * Тут только настройка сериализатора
      */
@@ -36,8 +35,7 @@ public class JsonWriter<T> {
      */
     public void writeToFileCollection(File file, List<T> collection) {
         File value = file;
-        if (!checkFileToWrite(file)) {
-            System.out.println("file without -w, please enter path to file");
+        if (Checker.checkFileValidityForWrite(file)) {
             value = getFileFromUserInput();
         }
         try {
@@ -47,19 +45,11 @@ public class JsonWriter<T> {
             System.out.println(e.getMessage());
         }
     }
-
-    private boolean checkFileToWrite(File file) {
-        return file.exists() && file.isFile() && file.canWrite();
-    }
-
     private File getFileFromUserInput() {
-        Scanner scanner = new Scanner(System.in);
         while (true) {
             File file1 = new File(scanner.nextLine());
-            if (checkFileToWrite(file1)) {
+            if (Checker.checkFileValidityForWrite(file1)) {
                 return file1;
-            } else {
-                System.out.println("Uncorrect input");
             }
         }
     }

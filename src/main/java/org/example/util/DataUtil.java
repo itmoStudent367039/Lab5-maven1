@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class DataUtil {
     private static DataUtil instance;
     private File file;
+    private final Scanner scanner = new Scanner(System.in);
 
     /**
     * Вот конструктор - при создании объекта инициализируется файл
@@ -33,9 +34,11 @@ public class DataUtil {
      * Все с файлами вынесены в отдельный класс - util.Checker (методы - проверки - static)
      */
     private void setFile() {
-        file = new File(setPathFromEnv());
-        while (!Checker.checkFileValidity(file)) {
-            file = new File(setPathFromConsole());
+        File file = new File(setPathFromEnv());
+        if (file.exists() && file.isFile() && file.canRead() && !file.getPath().matches("\\.(txt|json)$")) {
+            this.file = file;
+        } else {
+            this.file = setFileFromConsole();
         }
     }
 
@@ -43,16 +46,13 @@ public class DataUtil {
         return Checker.getEnvValidity(System.getenv("FILEFORLAB"));
     }
 
-    private String setPathFromConsole() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter a path to your file");
-        String line = "";
-        try {
-        line = scanner.nextLine();
-        } catch (NoSuchElementException e) {
-            e.printStackTrace();
+    private File setFileFromConsole() {
+        while (true) {
+            System.out.print("Enter path to file \n > ");
+            File file = new File(scanner.nextLine());
+            if (Checker.checkFileValidityForRead(file)) {
+                return file;
+            }
         }
-        scanner.close();
-        return line;
     }
 }

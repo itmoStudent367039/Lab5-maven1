@@ -54,8 +54,7 @@ public class JsonReader<T> {
             try {
                 this.elementList = Arrays.asList(mapper.readValue(data, type));
             } catch (JsonProcessingException e) {
-                System.err.println("Uncorrect input");
-               e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         }
     }
