@@ -8,12 +8,22 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
+import java.util.UUID;
+@CountOfArgs(17)
 public class ArgsProductBuilder implements ProductBuilder {
     private final Product product = new Product();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
+    @Order(1)
+    public void setId(String id) throws ValidException {
+        if (!BuildChecker.checkId(id)) {
+            throw new ValidException("Uncorrect input (id-uuid)");
+        }
+        product.setId(UUID.fromString(id));
+    }
+    @Override
+    @Order(2)
     public void setName(String name) throws ValidException {
         if (!BuildChecker.checkProductName(name)) {
             throw new ValidException("Uncorrect input (product's name)");
@@ -22,6 +32,7 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
+    @Order(3)
     public void setCoordinates(String x, String y) throws ValidException {
         if (!BuildChecker.checkXCoordinate(x) || !BuildChecker.checkYCoordinate(y)) {
             throw new ValidException("Uncorrect input (product's coordinates)");
@@ -30,6 +41,7 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
+    @Order(4)
     public void setCreationDate(String date, String time) throws ValidException {
         String datetime = String.format("%s %s", date, time);
         ZonedDateTime creationDate;
@@ -43,6 +55,7 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
+    @Order(5)
     public void setPrice(String price) throws ValidException {
         if (!BuildChecker.checkProductPrice(price)) {
             throw new ValidException("Uncorrect input (product's price)");
@@ -51,6 +64,7 @@ public class ArgsProductBuilder implements ProductBuilder {
     }
 
     @Override
+    @Order(6)
     public void setUnitOfMeasure(String measure) throws ValidException {
         if (!BuildChecker.checkMeasure(measure)) {
             throw new ValidException("Uncorrect input (measure-enum)");

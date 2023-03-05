@@ -28,8 +28,12 @@ public class RemoveByIdCommand<T extends Collection<Product>> extends Command<T,
     public void execute(String ... args) {
         try {
             UUID id = UUID.fromString(args[0]);
-            super.getCollection().removeById(id);
-        } catch (Exception e) {
+            if (super.getCollection().removeById(id)) {
+                System.out.println("delete successfully");
+            } else {
+                System.out.println("element with this id wasn't found");
+            }
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }

@@ -27,7 +27,8 @@ public class Product implements Valid, Comparable<Product> {
 
     @Override
     public boolean isValid() throws ValidException {
-        boolean isValid = !Objects.isNull(name) &&
+        boolean isValid = !Objects.isNull(id) &&
+                !Objects.isNull(name) &&
                 !name.isEmpty() &&
                 !Objects.isNull(coordinates) &&
                 !Objects.isNull(creationDate) &&

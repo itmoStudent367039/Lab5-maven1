@@ -6,6 +6,7 @@ import org.example.products.Product;
 
 public interface ProductBuilder {
     void setName(String name) throws ValidException;
+    void setId(String id) throws ValidException;
     void setCoordinates(String x, String y) throws ValidException;
     void setCreationDate(String date, String time) throws ValidException;
     void setPrice(String price) throws ValidException;

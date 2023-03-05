@@ -47,6 +47,8 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
             for (String[] cmdArgs : list) {
                 editor.execute(cmdArgs);
             }
+            executeController.getExcHistory().clear();
+            executeController.setControlSize(0);
         } catch (ExecuteException e) {
             System.out.println(e.getMessage());
         }
@@ -104,6 +106,12 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
             excHistory.add(exc);
             controlSize = controlSize + 1;
             checkRecursion();
+        }
+        private HashSet<String> getExcHistory() {
+            return excHistory;
+        }
+        private void setControlSize(int size) {
+            this.controlSize = size;
         }
 
         private void checkRecursion() throws ExecuteException {

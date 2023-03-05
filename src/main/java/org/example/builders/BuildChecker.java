@@ -9,6 +9,10 @@ public class BuildChecker {
     private static final String DOUBLE_VALUE = "^[-+]?[0-9]*\\.?[0-9]+$";
     private static final String COLOR_ENUM = "[1-6]";
     private static final String COUNTRY_ENUM = "[1-3]";
+    private static final String UUID_FORMAT = "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$";
+    public static boolean checkId(String id) {
+        return id.matches(UUID_FORMAT);
+    }
     public static boolean checkProductName(String name) {
         return !name.isEmpty();
     }

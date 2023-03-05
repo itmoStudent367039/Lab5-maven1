@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class ProductConsoleBuilder {
     private final Product product;
@@ -21,6 +22,19 @@ public class ProductConsoleBuilder {
     private String input() {
         System.out.print("> ");
         return scanner.nextLine();
+    }
+    public void setId() {
+        UUID uuid = null;
+        while (Objects.isNull(uuid)) {
+            System.out.printf("Enter product's id, P.S: uuid format \"%s\" \n", "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX");
+            String line = input().trim();
+            if (BuildChecker.checkId(line)) {
+                uuid = UUID.fromString(line);
+            } else {
+                System.out.println("Uncorrect input");
+            }
+        }
+        product.setId(uuid);
     }
     public void setName() {
         String productName = null;

@@ -1,14 +1,15 @@
 package org.example.commands;
 
-import org.example.builders.ArgsProductBuilder;
-import org.example.builders.PersonBuilder;
-import org.example.builders.ProductConsoleBuilder;
+import org.example.builders.*;
 import org.example.collection.ProductCollection;
 import org.example.exceptions.ValidException;
 import org.example.products.Person;
 import org.example.products.Product;
 
-import java.util.Collection;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AddCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "add {element}: добавить новый элемент в коллекцию";
@@ -33,7 +34,7 @@ public class AddCommand<T extends Collection<Product>> extends Command<T, Produc
         try {
             Product product = buildProduct(args);
             super.getCollection().add(product);
-        } catch (ValidException e) {
+        } catch (ValidException | InvocationTargetException | IllegalAccessException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -42,36 +43,62 @@ public class AddCommand<T extends Collection<Product>> extends Command<T, Produc
      * Вот здесь логика, если execute_script, потому что там комманда
      * вводиться с аргументами ,addIfMax - тоже самое
      */
-    static Product buildProduct(String[] args) throws ValidException {
-        if (args.length == 16) {
-            PersonBuilder personBuilder = new PersonBuilder() {{
-                setName(args[7]);
-                setHeight(args[8]);
-                setEyesColor(args[9]);
-                setHairColor(args[10]);
-                setNationality(args[11]);
-                setLocation(args[12], args[13], args[14], args[15]);
-            }};
-            Person owner = personBuilder.getPerson();
-            ArgsProductBuilder argsProductBuilder = new ArgsProductBuilder() {{
-                setName(args[0]);
-                setCoordinates(args[1], args[2]);
-                setCreationDate(args[3], args[4]);
-                setPrice(args[5]);
-                setUnitOfMeasure(args[6]);
-                setOwner(owner);
-            }};
-            return argsProductBuilder.getProduct();
-        } else {
-            ProductConsoleBuilder builder = new ProductConsoleBuilder(new Product()) {{
-                setName();
-                setCoordinates();
-                setCreationDate();
-                setPrice();
-                setUnitOfMeasure();
-                setOwner();
-            }};
+    static Product buildProduct(String[] args) throws ValidException, InvocationTargetException, IllegalAccessException {
+            List<Method> personMethods = Arrays.stream(PersonBuilder.class.getDeclaredMethods())
+                    .filter(method -> !Objects.isNull(method.getAnnotation(Order.class)))
+                    .sorted(Comparator.comparingInt(method -> method.getAnnotation(Order.class).value()))
+                    .collect(Collectors.toList());
+            List<Method> productsMethods = Arrays.stream(ArgsProductBuilder.class.getDeclaredMethods())
+                    .filter(method -> !Objects.isNull(method.getAnnotation(Order.class)))
+                    .sorted(Comparator.comparingInt(method -> method.getAnnotation(Order.class).value()))
+                    .collect(Collectors.toList());
+            int sumArgsOfMethods = countValueOfParameters(productsMethods) + countValueOfParameters(personMethods);
+            if (sumArgsOfMethods == args.length) {
+                return buildProductWithArgs(productsMethods, personMethods, args);
+            } else {
+                ProductConsoleBuilder builder = new ProductConsoleBuilder(new Product()) {{
+                    setId();
+                    setName();
+                    setCoordinates();
+                    setCreationDate();
+                    setPrice();
+                    setUnitOfMeasure();
+                    setOwner();
+                }};
             return builder.getProduct();
         }
+    }
+    private static Product buildProductWithArgs(List<Method> productMethods, List<Method> personMethods, String[] args) throws ValidException, InvocationTargetException, IllegalAccessException {
+        int count = 0;
+        PersonBuilder personBuilder = new PersonBuilder();
+        for (Method method: personMethods) {
+            if (method.getParameterCount() == 1) {
+                method.invoke(personBuilder, args[count]);
+                count++;
+            } else if (method.getParameterCount() == 4) {
+                method.invoke(personBuilder, args[count], args[count + 1], args[count + 2], args[count + 3]);
+                count = count + 4;
+            }
+        }
+        Person owner = personBuilder.getPerson();
+        ArgsProductBuilder argsProductBuilder = new ArgsProductBuilder();
+        for (Method method: productMethods) {
+            if (method.getParameterCount() == 1) {
+                method.invoke(argsProductBuilder, args[count]);
+                count++;
+            } else if (method.getParameterCount() == 2) {
+                method.invoke(argsProductBuilder, args[count], args[count + 1]);
+                count = count + 2;
+            }
+        }
+        argsProductBuilder.setOwner(owner);
+        return argsProductBuilder.getProduct();
+    }
+    private static int countValueOfParameters(List<Method> list) {
+        int count = 0;
+        for (Method method : list) {
+            count = count + method.getParameterCount();
+        }
+        return count;
     }
 }

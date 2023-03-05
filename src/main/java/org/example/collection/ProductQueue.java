@@ -45,7 +45,7 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
 
     @Override
     public void add(Product element) {
-        if (!collection.contains(element)) {
+        if (!checkElementById(element.getId())) {
             collection.add(element);
         } else {
             System.out.println("Element already exists");
@@ -73,12 +73,8 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
     }
 
     @Override
-    public void removeById(UUID id) {
-        if (collection.removeIf(product -> product.getId().equals(id))) {
-            System.out.println("Product deleted successfully");
-        } else {
-            System.out.printf("Product with id: %s was not found");
-        }
+    public boolean removeById(UUID id) {
+        return collection.removeIf(product -> product.getId().equals(id));
     }
 
     @Override
@@ -128,7 +124,7 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
     private void addValidElementsToCollection(Collection<Product> list) {
         for (Product product : list) {
             try {
-                if (product.isValid()) {
+                if (product.isValid() && !checkElementById(product.getId())) {
                     collection.add(product);
                 }
             } catch (ValidException e) {

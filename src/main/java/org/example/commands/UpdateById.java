@@ -2,6 +2,7 @@ package org.example.commands;
 
 import org.example.builders.ProductConsoleBuilder;
 import org.example.collection.ProductCollection;
+import org.example.exceptions.ValidException;
 import org.example.products.Product;
 
 import java.util.Collection;
@@ -25,17 +26,14 @@ public class UpdateById<T extends Collection<Product>> extends Command<T, Produc
     public String getDescription() {
         return description;
     }
-    /**
-     * беру вверхушку, так как элементы по убыванию отсортированы(price, а если цены равны,
-     * то по имени сортировка(алфавит -> убывание (a, b, c ....))
-     */
     @Override
     public void execute(String ... args) {
         try {
             UUID id = UUID.fromString(args[0]);
-            Product product = super.getCollection().getElementById(id);
-            if (!Objects.isNull(product)) {
-                new ProductConsoleBuilder(product) {{
+            if (super.getCollection().removeById(id)) {
+                Product product = new Product();
+                product.setId(id);
+                ProductConsoleBuilder consoleBuilder = new ProductConsoleBuilder(product) {{
                     setName();
                     setCoordinates();
                     setCreationDate();
@@ -43,10 +41,11 @@ public class UpdateById<T extends Collection<Product>> extends Command<T, Produc
                     setUnitOfMeasure();
                     setOwner();
                 }};
+                super.getCollection().add(consoleBuilder.getProduct());
             } else {
                 System.out.println("Element with this id wasn't found");
             }
-        } catch (Exception e) {
+        } catch (IllegalArgumentException | ValidException e) {
             System.out.println(e.getMessage());
         }
     }

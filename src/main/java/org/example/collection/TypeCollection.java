@@ -13,7 +13,7 @@ public interface TypeCollection<T extends Collection<E>, E> {
     void add(E element);
     void clear();
     void info();
-    void removeById(UUID id);
+    boolean removeById(UUID id);
     E head();
     void show();
     int size();

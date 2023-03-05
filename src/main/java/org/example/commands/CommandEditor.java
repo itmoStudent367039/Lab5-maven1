@@ -34,11 +34,11 @@ public class CommandEditor {
             } else {
                 System.err.println("Такой команды нет");
             }
-        } else if (commandArgs.length == 17) {
+        } else if (commandArgs.length == 18) {
             Command command = commandMap.get(commandArgs[0]);
             if (!Objects.isNull(command)) {
                 command.execute(commandArgs[1], commandArgs[2], commandArgs[3], commandArgs[4], commandArgs[5], commandArgs[6], commandArgs[7], commandArgs[8],
-                        commandArgs[9], commandArgs[10], commandArgs[11], commandArgs[12], commandArgs[13], commandArgs[14], commandArgs[15], commandArgs[16]);
+                        commandArgs[9], commandArgs[10], commandArgs[11], commandArgs[12], commandArgs[13], commandArgs[14], commandArgs[15], commandArgs[16], commandArgs[17]);
                 history.add(commandArgs[0]);
             } else {
                 System.out.println("Такой команды нет");

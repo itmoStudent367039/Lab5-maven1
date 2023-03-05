@@ -4,6 +4,7 @@ import org.example.collection.TypeCollection;
 import org.example.exceptions.ValidException;
 import org.example.products.Product;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, Product> {
@@ -39,7 +40,7 @@ public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, P
             } else {
                 System.out.println("Your product less than max of collection or equals it");
             }
-        } catch (ValidException e) {
+        } catch (ValidException | InvocationTargetException | IllegalAccessException e) {
             System.out.println(e.getMessage());
         }
     }
