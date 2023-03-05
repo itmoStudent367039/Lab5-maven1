@@ -16,8 +16,8 @@ import java.util.*;
 public class ExecuteScriptCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "execute_script file_name: считать и исполнить скрипт из указанного файла";
     private final String name = "execute_script";
-    private Controller executeController;
-    private CommandEditor editor;
+    private final Controller executeController;
+    private final CommandEditor editor;
 
     public ExecuteScriptCommand(CommandEditor editor) {
         this.editor = editor;
@@ -93,7 +93,7 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
     }
 
     private class Controller {
-        private HashSet<String> excHistory;
+        private final HashSet<String> excHistory;
         private int controlSize;
 
         private Controller() {
