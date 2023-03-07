@@ -5,12 +5,13 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.extern.slf4j.Slf4j;
 import org.example.util.Checker;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
+@Slf4j
 public class JsonWriter<T> {
     private final ObjectWriter writer;
     private final ObjectMapper mapper;
@@ -42,7 +43,7 @@ public class JsonWriter<T> {
             writer.writeValue(value, collection);
             System.out.println("save successfully");
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage(), e);
         }
     }
     private File getFileFromUserInput() {

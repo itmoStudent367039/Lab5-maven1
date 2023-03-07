@@ -1,5 +1,6 @@
 package org.example.builders;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.exceptions.ValidException;
 import org.example.products.*;
 
@@ -9,7 +10,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.UUID;
-@CountOfArgs(17)
 public class ArgsProductBuilder implements ProductBuilder {
     private final Product product = new Product();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

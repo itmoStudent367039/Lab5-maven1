@@ -1,5 +1,6 @@
 package org.example.commands;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.exceptions.ExecuteException;
 import org.example.products.Product;
 import org.example.util.Checker;
@@ -13,6 +14,7 @@ import java.util.*;
  * т.к. ExScrCommand - объект в ед. экзэмляре, но хочу сделать подругому, это временный вариант(
  * При чтении делю строку сразу по пробелам и засовываю String[] args в метод execute() -> CommandEditor
  */
+@Slf4j
 public class ExecuteScriptCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "execute_script file_name: считать и исполнить скрипт из указанного файла";
     private final String name = "execute_script";
@@ -39,18 +41,22 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
      */
     @Override
     public void execute(String... arg) {
+        if (arg.length != 1) {
+            System.out.println("Uncorrect input");
+            return;
+        }
         try {
-            List<String[]> list = readFileLinesOrReturnNull(getCurrentFileOrReturnNull(arg[0]));
-            if (Objects.isNull(list)) {
+            Optional<List<String[]>> list = Optional.ofNullable(readFileLinesOrReturnNull(getCurrentFileOrReturnNull(arg[0])));
+            if (list.isEmpty() || list.get().size() != 1) {
                 return;
             }
-            for (String[] cmdArgs : list) {
+            for (String[] cmdArgs : list.get()) {
                 editor.execute(cmdArgs);
             }
             executeController.getExcHistory().clear();
             executeController.setControlSize(0);
-        } catch (ExecuteException e) {
-            System.out.println(e.getMessage());
+        } catch (ExecuteException | NoSuchElementException e) {
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -66,8 +72,8 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
     /**
      * Если в файле скрипта снова команда исполнить скрипт то делю только по первому пробелу, иначе (exScr /Smth smth/file) - такое не будет парситься
      */
-    private List<String[]> readFileLinesOrReturnNull(File file) throws ExecuteException {
-        if (Objects.isNull(file)) {
+    private List<String[]> readFileLinesOrReturnNull(File file) throws ExecuteException, NoSuchElementException {
+        if (Optional.ofNullable(file).isEmpty()) {
             return null;
         } else {
             List<String[]> list;
@@ -79,8 +85,12 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
                         String[] cmdArgs = line.split(" ");
                         if (cmdArgs[0].equals("execute_script")) {
                             String[] cmdArg = line.split(" ", 2);
-                            executeController.addExc(cmdArg[1]);
-                            list.add(cmdArg);
+                            try {
+                                executeController.addExc(cmdArg[1]);
+                                list.add(cmdArg);
+                            } catch (ArrayIndexOutOfBoundsException e) {
+                                System.out.println(e.getMessage());
+                            }
                         } else {
                             list.add(cmdArgs);
                         }
@@ -88,7 +98,7 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
                 }
                 return list;
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage(), e);
                 return null;
             }
         }

@@ -3,6 +3,7 @@ package org.example.io;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.extern.slf4j.Slf4j;
 import org.example.util.Checker;
 
 import java.io.*;
@@ -13,6 +14,7 @@ import java.util.*;
  * парсим (если вдруг ошибка чтения - возвращаем пустую строку)
  *
  */
+@Slf4j
 public class JsonReader<T> {
     private final File file;
     private List<T> elementList;
@@ -40,8 +42,8 @@ public class JsonReader<T> {
         try (FileReader reader = new FileReader(file)) {
             buffer = new char[(int) file.length()];
             reader.read(buffer);
-        } catch (IOException e1) {
-            e1.printStackTrace();
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
         }
         return Objects.isNull(buffer) ? "" : String.valueOf(buffer);
     }
@@ -54,7 +56,7 @@ public class JsonReader<T> {
             try {
                 this.elementList = Arrays.asList(mapper.readValue(data, type));
             } catch (JsonProcessingException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage(), e);
             }
         }
     }

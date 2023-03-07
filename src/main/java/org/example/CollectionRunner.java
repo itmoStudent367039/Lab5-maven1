@@ -10,7 +10,8 @@ import org.example.products.Product;
 import org.example.util.DataUtil;
 
 import java.io.File;
-import java.util.*;
+import java.util.Queue;
+
 /**
  * ProductDirector - директор для BuildProduct, с помощью него получаю объекты;
  *

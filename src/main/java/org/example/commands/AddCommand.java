@@ -1,5 +1,6 @@
 package org.example.commands;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.builders.*;
 import org.example.collection.ProductCollection;
 import org.example.exceptions.ValidException;
@@ -10,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Slf4j
 public class AddCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "add {element}: добавить новый элемент в коллекцию";
     private final String name = "add";
@@ -35,7 +36,8 @@ public class AddCommand<T extends Collection<Product>> extends Command<T, Produc
             Product product = buildProduct(args);
             super.getCollection().add(product);
         } catch (ValidException | InvocationTargetException | IllegalAccessException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage(), e);
+            System.out.println("Uncorrect input");
         }
     }
 

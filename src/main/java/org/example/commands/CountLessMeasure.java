@@ -1,5 +1,6 @@
 package org.example.commands;
 
+import org.example.builders.BuildChecker;
 import org.example.collection.ProductCollection;
 import org.example.exceptions.ValidException;
 import org.example.products.Product;
@@ -23,10 +24,6 @@ public class CountLessMeasure<T extends Collection<Product>> extends Command<T, 
         return name;
     }
 
-    private boolean checkArg(String arg) {
-        return !Objects.isNull(arg) && arg.matches("[1-4]");
-    }
-
     @Override
     public String getDescription() {
         return description;
@@ -34,7 +31,7 @@ public class CountLessMeasure<T extends Collection<Product>> extends Command<T, 
 
     @Override
     public void execute(String ... args) {
-        if (checkArg(args[0])) {
+        if (args.length == 1 && BuildChecker.checkMeasure(args[0])) {
             int value = Integer.parseInt(args[0]);
             UnitOfMeasure unitOfMeasure = UnitOfMeasure.getMeasureByNumber(value);
             super.getCollection().countLessMeasure(unitOfMeasure);

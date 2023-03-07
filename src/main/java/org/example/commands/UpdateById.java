@@ -1,14 +1,14 @@
 package org.example.commands;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.builders.ProductConsoleBuilder;
 import org.example.collection.ProductCollection;
 import org.example.exceptions.ValidException;
 import org.example.products.Product;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.UUID;
-
+@Slf4j
 public class UpdateById<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "update id {element}: обновить значения элемента из коллекции по его id";
     private final String name = "update";
@@ -28,6 +28,10 @@ public class UpdateById<T extends Collection<Product>> extends Command<T, Produc
     }
     @Override
     public void execute(String ... args) {
+        if (args.length != 1) {
+            System.out.println("Empty input");
+            return;
+        }
         try {
             UUID id = UUID.fromString(args[0]);
             if (super.getCollection().removeById(id)) {
@@ -46,7 +50,8 @@ public class UpdateById<T extends Collection<Product>> extends Command<T, Produc
                 System.out.println("Element with this id wasn't found");
             }
         } catch (IllegalArgumentException | ValidException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage(), e);
+            System.out.println("Uncorrect input");
         }
     }
 }

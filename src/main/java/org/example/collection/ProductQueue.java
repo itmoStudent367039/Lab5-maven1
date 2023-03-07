@@ -1,5 +1,6 @@
 package org.example.collection;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.exceptions.ValidException;
 import org.example.io.JsonWriter;
 import org.example.products.Person;
@@ -11,7 +12,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Slf4j
 public class ProductQueue implements ProductCollection<Queue<Product>> {
     private final Queue<Product> collection;
     private final java.time.ZonedDateTime creationDate;
@@ -48,6 +49,7 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
         if (!checkElementById(element.getId())) {
             collection.add(element);
         } else {
+            log.warn(String.format("element: %s is already exists", element.getId().toString()));
             System.out.println("Element already exists");
         }
     }
@@ -126,9 +128,11 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
             try {
                 if (product.isValid() && !checkElementById(product.getId())) {
                     collection.add(product);
+                } else {
+                    log.warn(String.format("element: %s is already exists", product.getId().toString()));
                 }
             } catch (ValidException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage(), e);
             }
         }
     }

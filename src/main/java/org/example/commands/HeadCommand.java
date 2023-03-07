@@ -5,6 +5,7 @@ import org.example.products.Product;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
 public class HeadCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "head: вывести первый элемент коллекции";
@@ -27,7 +28,7 @@ public class HeadCommand<T extends Collection<Product>> extends Command<T, Produ
     @Override
     public void execute(String ... args) {
         Product product = super.getCollection().head();
-        if (Objects.isNull(product)) {
+        if (Optional.ofNullable(product).isEmpty()) {
             System.out.println("Collection is empty");
         } else {
             System.out.println(product);

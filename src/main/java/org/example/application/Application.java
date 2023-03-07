@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Application {
-    private CommandEditor commandEditor;
+    private final CommandEditor commandEditor;
     private final Scanner scanner = new Scanner(System.in);
     public Application(CommandEditor editor) {
         commandEditor = editor;

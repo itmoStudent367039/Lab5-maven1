@@ -5,8 +5,8 @@ import org.example.products.Product;
 import java.util.*;
 
 public class CommandEditor {
-    private Map<String, Command> commandMap = new HashMap<>();
-    private List<String> history = new ArrayList<>();
+    private final Map<String, Command> commandMap = new HashMap<>();
+    private final List<String> history = new ArrayList<>();
     public List<String> getHistory() {
         return history;
     }

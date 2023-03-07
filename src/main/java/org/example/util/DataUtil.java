@@ -1,5 +1,7 @@
 package org.example.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -7,6 +9,7 @@ import java.util.Scanner;
  * Это единственный синглтон* Сделал все хардкордно: в конструкторе устанавливается файл - значение
  * переменной окружения (getFile()) - если ссылки не существует, то просит ввести из консоли
  */
+@Slf4j
 public class DataUtil {
     private static DataUtil instance;
     private File file;
@@ -35,7 +38,7 @@ public class DataUtil {
      */
     private void setFile() {
         File file = new File(setPathFromEnv());
-        if (file.exists() && file.isFile() && file.canRead() && !file.getPath().matches("\\.(txt|json)$")) {
+        if (Checker.checkFileValidityForRead(file)) {
             this.file = file;
         } else {
             this.file = setFileFromConsole();
