@@ -19,9 +19,9 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
     private final String description = "execute_script file_name: считать и исполнить скрипт из указанного файла";
     private final String name = "execute_script";
     private final Controller executeController;
-    private final CommandEditor editor;
+    private final CommandEditor<T> editor;
 
-    public ExecuteScriptCommand(CommandEditor editor) {
+    public ExecuteScriptCommand(CommandEditor<T> editor) {
         this.editor = editor;
         executeController = new Controller();
     }
@@ -89,7 +89,7 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
                                 executeController.addExc(cmdArg[1]);
                                 list.add(cmdArg);
                             } catch (ArrayIndexOutOfBoundsException e) {
-                                System.out.println(e.getMessage());
+                                log.error(e.getMessage(), e);
                             }
                         } else {
                             list.add(cmdArgs);
@@ -117,9 +117,11 @@ public class ExecuteScriptCommand<T extends Collection<Product>> extends Command
             controlSize = controlSize + 1;
             checkRecursion();
         }
+
         private HashSet<String> getExcHistory() {
             return excHistory;
         }
+
         private void setControlSize(int size) {
             this.controlSize = size;
         }

@@ -8,11 +8,11 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class HelpCommand<T extends Collection<Product>> extends Command<T, Product> {
-    private CommandEditor editor;
+    private CommandEditor<T> editor;
     private final String name = "help";
     private final String description = "help: вывести справку по доступным командам";
 
-    public HelpCommand(ProductCollection<T> collection, CommandEditor commandDirector) {
+    public HelpCommand(ProductCollection<T> collection, CommandEditor<T> commandDirector) {
         super(collection);
         this.editor = commandDirector;
     }

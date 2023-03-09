@@ -8,12 +8,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+
 @Slf4j
 public class Checker {
     private static final String JSON_OR_TXT_FORMAT = "^.*\\.(json|txt)$";
+
     public static boolean checkFileValidityForRead(File file) {
         return checkFileExists(file) && checkFileToRead(file) && checkFormatOfFile(file);
     }
+
     private static boolean checkFileToRead(File file) {
         if (!file.canRead()) {
             try {
@@ -26,6 +29,7 @@ public class Checker {
         }
         return true;
     }
+
     private static boolean checkFormatOfFile(File file) {
         if (!file.getPath().matches(JSON_OR_TXT_FORMAT)) {
             try {

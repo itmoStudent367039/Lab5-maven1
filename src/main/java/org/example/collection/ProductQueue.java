@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+
 @Slf4j
 public class ProductQueue implements ProductCollection<Queue<Product>> {
     private final Queue<Product> collection;
@@ -25,10 +26,12 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
         creationDate = ZonedDateTime.now();
         this.homeFile = file;
     }
+
     @Override
     public int size() {
         return collection.size();
     }
+
     @Override
     public void save(JsonWriter<Product> writer) {
         writer.writeToFileCollection(homeFile, new ArrayList<>(collection));
@@ -46,11 +49,15 @@ public class ProductQueue implements ProductCollection<Queue<Product>> {
 
     @Override
     public void add(Product element) {
-        if (!checkElementById(element.getId())) {
-            collection.add(element);
-        } else {
-            log.warn(String.format("element: %s is already exists", element.getId().toString()));
-            System.out.println("Element already exists");
+        try {
+            if (element.isValid() && !checkElementById(element.getId())) {
+                collection.add(element);
+            } else {
+                log.warn(String.format("element: %s is already exists", element.getId().toString()));
+                System.out.println("Element already exists");
+            }
+        } catch (ValidException e) {
+            log.error(e.getMessage(), e);
         }
     }
 

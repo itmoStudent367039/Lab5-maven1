@@ -10,9 +10,9 @@ import java.util.List;
 public class HistoryCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "history: вывести последние 11 команд (без их аргументов)";
     private final String name = "history";
-    private CommandEditor commandEditor;
+    private CommandEditor<T> commandEditor;
 
-    public HistoryCommand(TypeCollection<T, Product> collection, CommandEditor editor) {
+    public HistoryCommand(TypeCollection<T, Product> collection, CommandEditor<T> editor) {
         super(collection);
         commandEditor = editor;
     }

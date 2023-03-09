@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
+
 @Slf4j
 public class AddCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "add {element}: добавить новый элемент в коллекцию";
@@ -46,34 +47,35 @@ public class AddCommand<T extends Collection<Product>> extends Command<T, Produc
      * вводиться с аргументами ,addIfMax - тоже самое
      */
     static Product buildProduct(String[] args) throws ValidException, InvocationTargetException, IllegalAccessException {
-            List<Method> personMethods = Arrays.stream(PersonBuilder.class.getDeclaredMethods())
-                    .filter(method -> !Objects.isNull(method.getAnnotation(Order.class)))
-                    .sorted(Comparator.comparingInt(method -> method.getAnnotation(Order.class).value()))
-                    .collect(Collectors.toList());
-            List<Method> productsMethods = Arrays.stream(ArgsProductBuilder.class.getDeclaredMethods())
-                    .filter(method -> !Objects.isNull(method.getAnnotation(Order.class)))
-                    .sorted(Comparator.comparingInt(method -> method.getAnnotation(Order.class).value()))
-                    .collect(Collectors.toList());
-            int sumArgsOfMethods = countValueOfParameters(productsMethods) + countValueOfParameters(personMethods);
-            if (sumArgsOfMethods == args.length) {
-                return buildProductWithArgs(productsMethods, personMethods, args);
-            } else {
-                ProductConsoleBuilder builder = new ProductConsoleBuilder(new Product()) {{
-                    setId();
-                    setName();
-                    setCoordinates();
-                    setCreationDate();
-                    setPrice();
-                    setUnitOfMeasure();
-                    setOwner();
-                }};
+        List<Method> personMethods = Arrays.stream(PersonBuilder.class.getDeclaredMethods())
+                .filter(method -> !Objects.isNull(method.getAnnotation(Order.class)))
+                .sorted(Comparator.comparingInt(method -> method.getAnnotation(Order.class).value()))
+                .collect(Collectors.toList());
+        List<Method> productsMethods = Arrays.stream(ArgsProductBuilder.class.getDeclaredMethods())
+                .filter(method -> !Objects.isNull(method.getAnnotation(Order.class)))
+                .sorted(Comparator.comparingInt(method -> method.getAnnotation(Order.class).value()))
+                .collect(Collectors.toList());
+        int sumArgsOfMethods = countValueOfParameters(productsMethods) + countValueOfParameters(personMethods);
+        if (sumArgsOfMethods == args.length) {
+            return buildProductWithArgs(productsMethods, personMethods, args);
+        } else {
+            ProductConsoleBuilder builder = new ProductConsoleBuilder(new Product()) {{
+                setId();
+                setName();
+                setCoordinates();
+                setCreationDate();
+                setPrice();
+                setUnitOfMeasure();
+                setOwner();
+            }};
             return builder.getProduct();
         }
     }
+
     private static Product buildProductWithArgs(List<Method> productMethods, List<Method> personMethods, String[] args) throws ValidException, InvocationTargetException, IllegalAccessException {
         int count = 0;
         PersonBuilder personBuilder = new PersonBuilder();
-        for (Method method: personMethods) {
+        for (Method method : personMethods) {
             if (method.getParameterCount() == 1) {
                 method.invoke(personBuilder, args[count]);
                 count++;
@@ -84,7 +86,7 @@ public class AddCommand<T extends Collection<Product>> extends Command<T, Produc
         }
         Person owner = personBuilder.getPerson();
         ArgsProductBuilder argsProductBuilder = new ArgsProductBuilder();
-        for (Method method: productMethods) {
+        for (Method method : productMethods) {
             if (method.getParameterCount() == 1) {
                 method.invoke(argsProductBuilder, args[count]);
                 count++;
@@ -96,6 +98,7 @@ public class AddCommand<T extends Collection<Product>> extends Command<T, Produc
         argsProductBuilder.setOwner(owner);
         return argsProductBuilder.getProduct();
     }
+
     private static int countValueOfParameters(List<Method> list) {
         int count = 0;
         for (Method method : list) {

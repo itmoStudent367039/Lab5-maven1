@@ -7,6 +7,7 @@ import org.example.products.Product;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+
 @Slf4j
 public class AddIfMaxCommand<T extends Collection<Product>> extends Command<T, Product> {
     private final String description = "add_if_max: добавить новый элемент в коллекцию, если его значение наибольшего элемента в этой коллекции";
